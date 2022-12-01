@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Sets project name
-project(projects_realtime LANGUAGES CXX C)
+project(softblue LANGUAGES CXX C)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -29,25 +29,26 @@ add_executable(${PROJECT_NAME}
 
     src/realtime.cpp
     src/mainwindow.cpp
-    src/settings.cpp
     src/utils/scenefilereader.cpp
     src/utils/sceneparser.cpp
-
-    src/meshgen.cpp
-    src/meshgen.h
-
-    src/fbo.cpp
-    src/fbo.h
 
     src/debug.h
 
     src/mainwindow.h
     src/realtime.h
-    src/settings.h
     src/utils/scenedata.h
     src/utils/scenefilereader.h
     src/utils/sceneparser.h
     src/utils/shaderloader.h
+
+    # softblue specific classes
+    src/scene.cpp
+    src/mesh.cpp
+    src/spheremesh.cpp
+
+    src/scene.h
+    src/mesh.h
+    src/spheremesh.h
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`
@@ -74,8 +75,6 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
     FILES
         resources/shaders/default.frag
         resources/shaders/default.vert
-        resources/shaders/texture.frag
-        resources/shaders/texture.vert
 )
 
 # GLEW: this provides support for Windows (including 64-bit)
