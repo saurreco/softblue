@@ -65,12 +65,18 @@ void SphereMesh::createIcosahedron()
                                    -1.0f, -1.0f, 0.0f,
                                    0.0f, 0.0f, 0.0f, 0.0f,
                                    1.0f, -1.0f, 0.0f,
-                                  0.0f, 0.0f, 0.0f};
-    std::vector<int> tmpIndices = {0, 1, 2};
+                                   0.0f, 0.0f, 0.0f,
+//                                   1.f,  1.f, 0.0f,
+//                                   0.0f, 0.0f, 0.0f,
+                                   -1.f,  1.f, 0.0f,
+                                   0.0f, 0.0f, 0.0f,
+                                   1.f, -1.f, 0.0f,
+                                   0.0f, 0.0f, 0.0f};
+    std::vector<int> tmpIndices = {0, 1, 2, 3, 0, 4};
     vertices = tmpVerts;
     indices = tmpIndices;
-    numIndices = 3;
-    numVertices = 3;
+    numIndices = 6;
+    numVertices = 5;
 }
 
 void SphereMesh::subdivide()
