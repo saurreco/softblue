@@ -45,8 +45,8 @@ public:
     GLuint shader;
 
     // current TEST scene
-    Model testModel;
-    Light testPointLight;
+    Model testModel = Model();
+    Light testPointLight = Light();
 
     void initModel();
 private:
