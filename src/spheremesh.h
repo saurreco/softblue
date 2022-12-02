@@ -15,6 +15,7 @@ public:
         createIcosahedron();
         genBuffers();
         initBuffers();
+//        subdivide();
     }
     void pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2);
     void subdivide();

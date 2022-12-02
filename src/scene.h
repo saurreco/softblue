@@ -17,8 +17,8 @@ struct Model {
 
 struct Light {
     glm::vec4 color;
-    glm::vec4 pos;
-    glm::vec4 dir;
+    glm::vec3 pos;
+    glm::vec3 dir;
     glm::vec3 function;
     float penumbra;
     float angle;
@@ -37,7 +37,7 @@ public:
     void matricesInit(int w, int h);
     void drawModel(Model model);
     void addModel(Mesh* mesh, glm::mat4 ctm);
-    void addLight(glm::vec4 color, glm::vec4 pos, glm::vec4 dir);
+    void addLight(glm::vec4 color, glm::vec3 pos, glm::vec3 dir);
 
     glm::mat4 viewMatrix;
     glm::mat4 projMatrix;
