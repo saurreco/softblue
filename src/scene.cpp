@@ -92,7 +92,7 @@ void Scene::initModel() {
     this->testModel.ambient = glm::vec4(0.f, 1.f, 0.f, 1.f);
     this->testModel.diffuse = glm::vec4(0.f, 1.f, 0.f, 1.f);
     this->testModel.specular = glm::vec4(1.f, 1.f, 1.f, 1.f);
-//    this->testModel.shininess = 0.1f;
+    this->testModel.shininess = 20.f;
     this->testModel.ctm = glm::mat4(1.f);
     this->testModel.geometry = new SphereMesh();
 }
