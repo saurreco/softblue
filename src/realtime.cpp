@@ -49,7 +49,6 @@ void Realtime::initializeGL() {
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
     this->scene = new Scene();
-    this->scene->sceneInit(m_width, m_height);
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -73,6 +72,7 @@ void Realtime::initializeGL() {
 
     // Shader setup (DO NOT EDIT)
     this->scene->shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
+    this->scene->sceneInit(m_width, m_height);
 }
 
 void Realtime::paintGL() {
