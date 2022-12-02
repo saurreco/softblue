@@ -63,6 +63,7 @@ void SphereMesh::createIcosahedron()
 
 void SphereMesh::subdivide()
 {
+    numIndices = 0;
     int numTriangles = this->indices.size() / 3;
     std::vector<int> tmpIndices;
     for (int i = 0; i < numTriangles; i++)
@@ -122,6 +123,7 @@ void SphereMesh::subdivide()
         tmpIndices.push_back(i2);
         tmpIndices.push_back(i1);
         tmpIndices.push_back(v2);
+        numIndices += 12;
     }
 
     this->indices.clear();
