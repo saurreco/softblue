@@ -46,6 +46,9 @@ void Realtime::finish() {
 
 void Realtime::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
+    m_width = size().width() * m_devicePixelRatio;
+    m_height = size().height() * m_devicePixelRatio;
+    scene = new Scene(m_width, m_height);
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -80,8 +83,9 @@ void Realtime::paintGL() {
 void Realtime::resizeGL(int w, int h) {
     // Tells OpenGL how big the screen is
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
-    m_width = size().width();
-    m_height = size().height();
+    m_width = size().width() * m_devicePixelRatio;
+    m_height = size().height() * m_devicePixelRatio;
+    // TODO: update w & h in Scene, construct matrices elsewhere in scene & not in constructor
 }
 
 // ================== Project 6: Action!
@@ -108,24 +112,6 @@ void Realtime::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void Realtime::mouseMoveEvent(QMouseEvent *event) {
-//    if (m_mouseDown) {
-//        int posX = event->position().x();
-//        int posY = event->position().y();
-//        int deltaX = posX - m_prev_mouse_pos.x;
-//        int deltaY = posY - m_prev_mouse_pos.y;
-//        m_prev_mouse_pos = glm::vec2(posX, posY);
-//        float dx = -3.14159 * 0.2 * (deltaX / (float)m_width);
-//        float dy = 3.14159 * 0.2 * (deltaY / (float)m_height);
-//        m_look = m_look * glm::mat3(glm::rotate(dx, glm::vec3(0, 1, 0)));
-//        m_look = m_look * glm::mat3(glm::rotate(dy, glm::cross(m_pos - m_look, m_up)));
-//        glm::vec3 pt = m_pos - m_up;
-//        pt = pt * glm::mat3(glm::rotate(dy, glm::cross(m_pos - m_look, m_up)));
-//       // m_up = m_pos - pt;
-//        m_view = glm::lookAt(m_pos, m_look, m_up);
-
-//std::cout << glm::to_string(m_up) << std::endl;
-//        update(); // asks for a PaintGL() call to occur
-//    }
 }
 
 void Realtime::timerEvent(QTimerEvent *event) {

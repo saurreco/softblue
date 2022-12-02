@@ -55,5 +55,5 @@ private:
 //    GLuint m_shader;
 
     // Scene
-    Scene* scene = new Scene();
+    Scene* scene;
 };

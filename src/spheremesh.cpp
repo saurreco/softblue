@@ -17,11 +17,11 @@ void SphereMesh::pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
     this->indices.push_back(i0);
     this->indices.push_back(i1);
     this->indices.push_back(i2);
+    numIndices += 3;
 }
 
 void SphereMesh::createIcosahedron()
 {
-    /*
     float phi = (1.0f + sqrt(5.0f)) * 0.5f; // golden ratio
     float a = 1.0f;
     float b = 1.0f / phi;
@@ -59,24 +59,6 @@ void SphereMesh::createIcosahedron()
     this->pushTriangle(v8, v11, v7);
     this->pushTriangle(v6, v12, v5);
     this->pushTriangle(v11, v9, v5);
-    */
-    std::vector<float> tmpVerts = {-1.0f, 1.0f, 0.0f,
-                                   0.0f, 0.0f, 0.0f,
-                                   -1.0f, -1.0f, 0.0f,
-                                   0.0f, 0.0f, 0.0f, 0.0f,
-                                   1.0f, -1.0f, 0.0f,
-                                   0.0f, 0.0f, 0.0f,
-//                                   1.f,  1.f, 0.0f,
-//                                   0.0f, 0.0f, 0.0f,
-                                   -1.f,  1.f, 0.0f,
-                                   0.0f, 0.0f, 0.0f,
-                                   1.f, -1.f, 0.0f,
-                                   0.0f, 0.0f, 0.0f};
-    std::vector<int> tmpIndices = {0, 1, 2, 3, 0, 4};
-    vertices = tmpVerts;
-    indices = tmpIndices;
-    numIndices = 6;
-    numVertices = 5;
 }
 
 void SphereMesh::subdivide()
