@@ -48,7 +48,8 @@ void Realtime::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
-    scene = new Scene(m_width, m_height);
+    this->scene = new Scene();
+    this->scene->sceneInit(m_width, m_height);
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -72,7 +73,6 @@ void Realtime::initializeGL() {
 
     // Shader setup (DO NOT EDIT)
     this->scene->shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
-    this->scene->initModel(); // TESTING
 }
 
 void Realtime::paintGL() {
@@ -85,7 +85,8 @@ void Realtime::resizeGL(int w, int h) {
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
-    // TODO: update w & h in Scene, construct matrices elsewhere in scene & not in constructor
+    // update w & h in Scene, construct matrices elsewhere in scene & not in constructor
+    this->scene->matricesInit(m_width, m_height);
 }
 
 // ================== Project 6: Action!

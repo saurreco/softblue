@@ -6,15 +6,13 @@ layout(location = 1) in vec3 osNormal;
 out vec3 wsPos;
 out vec3 wsNormal;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 proj;
-uniform mat4 normalTransform;
-
-
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projMatrix;
+uniform mat4 normalTransformMatrix;
 
 void main() {
-     wsPos = vec3(model * vec4(osPos, 1));
-     wsNormal = vec3(normalTransform * vec4(normalize(vec4(osPos, 1))));
-     gl_Position = proj * view * model * vec4(osPos, 1);
+     wsPos = vec3(modelMatrix * vec4(osPos, 1));
+     wsNormal = vec3(normalTransformMatrix * vec4(normalize(vec4(osPos, 1))));
+     gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(osPos, 1);
 }

@@ -6,8 +6,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-
-
 struct Model {
   glm::mat4 ctm;
   Mesh* geometry;
@@ -19,44 +17,49 @@ struct Model {
 
 struct Light {
     glm::vec4 color;
-    glm::vec3 pos;
-    glm::vec3 dir;
+    glm::vec4 pos;
+    glm::vec4 dir;
     glm::vec3 function;
     float penumbra;
     float angle;
 };
 
 struct Camera {
-    glm::vec3 pos;
-    glm::vec3 look;
-    glm::vec3 up;
+    glm::vec4 pos;
+    glm::vec4 look;
+    glm::vec4 up;
     float heightAngle;
 };
 
 class Scene {
 public:
-    Scene(int w, int h) {
-        glm::mat4 tmpProj = glm::perspective(45.0f, (w / (float)h), 0.1f, 100.0f);
-        glm::mat4 tmpView = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-        mvp = tmpProj * tmpView;
-    }
+    void sceneInit(int w, int h);
+    void matricesInit(int w, int h);
     void drawModel(Model model);
     void addModel(Mesh* mesh, glm::mat4 ctm);
-    void addLight(glm::vec4 color, glm::vec3 pos, glm::vec3 dir);
+    void addLight(glm::vec4 color, glm::vec4 pos, glm::vec4 dir);
 
-    glm::mat4 m_view;
-    glm::mat4 m_proj;
+    glm::mat4 viewMatrix;
+    glm::mat4 projMatrix;
     glm::mat4 mvp;
     GLuint shader;
+
+    // current TEST scene
     Model testModel;
+    Light testPointLight;
+
     void initModel();
 private:
-    float ka;
-    float kd;
-    float ks;
+    float ka = 0.5;
+    float kd = 0.5;
+    float ks = 0.5;
     Camera camera;
     Light lights[8];
     int numLights;
     std::vector<Model> models;
     int numModels;
+
+    // screen side lengths
+    int screenWidth;
+    int screenHeight;
 };

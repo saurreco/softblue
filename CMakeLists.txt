@@ -33,6 +33,7 @@ add_executable(${PROJECT_NAME}
     src/utils/sceneparser.cpp
 
     src/debug.h
+    src/utils/errorthrowing.h
 
     src/mainwindow.h
     src/realtime.h
