@@ -12,7 +12,7 @@
 
 void SphereMesh::pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
 {
-    int i0 = this->pushVertex(v0, glm::normalize(v0));
+    int i0 = this->pushVertex(v0, glm::normalize(v0)); // this normalization is unnecessary
     int i1 = this->pushVertex(v1, glm::normalize(v1));
     int i2 = this->pushVertex(v2, glm::normalize(v2));
     this->indices.push_back(i0);
@@ -27,6 +27,7 @@ void SphereMesh::createIcosahedron()
     float a = 1.0f;
     float b = 1.0f / phi;
 
+    // SPHERE OF RADIUS 1
     glm::vec3 v1 = glm::normalize(glm::vec3(0, b, -a));
     glm::vec3 v2 = glm::normalize(glm::vec3(b, a, 0));
     glm::vec3 v3 = glm::normalize(glm::vec3(-b, a, 0));
@@ -77,11 +78,6 @@ void SphereMesh::subdivide()
     std::vector<int> tmpIndices;
     for (int i = 0; i < numTriangles; i++)
     { /* loop through triangles */
-        std::cout << "first triangle " << std::endl;
-        std::cout << i << " " << vertices[indices[i]] << ", " << vertices[indices[i] + 1] << ", " << vertices[indices[i] + 2] << std::endl;
-        std::cout << i + 1 << " " << vertices[indices[i + 1] * 6] << ", " << vertices[indices[i + 1] * 6 + 1] << ", " << vertices[indices[i + 1] * 6 + 2] << std::endl;
-        std::cout << i + 2 << " " << vertices[indices[i + 2] * 6] << ", " << vertices[indices[i + 2] * 6 + 1] << ", " << vertices[indices[i + 2] * 6 + 2] << std::endl;
-
         std::vector<int> tmp;
         for (int j = 0; j < 3; j++)
         { /* loop through edges */
@@ -102,17 +98,10 @@ void SphereMesh::subdivide()
             {
                 glm::vec3 v0 = getVertex(indices[l]);
                 glm::vec3 v1 = getVertex(indices[r]);
-                std::cout << "edge " << j << std::endl;
-
-                std::cout << l << " " << glm::to_string(v0) << std::endl;
-                std::cout << r << " " << glm::to_string(v1) << std::endl;
-
                 glm::vec3 v = 0.5f * (v0 + v1);
 
-                std::cout << " new v" << glm::to_string(v) << std::endl;
-
                 glm::vec3 vn = normalize(v);
-                int idx = pushVertex(v, vn);
+                int idx = pushVertex(vn, vn);
                 tmp.push_back(idx);
                 edgeMap[e] = idx;
             }
@@ -124,16 +113,6 @@ void SphereMesh::subdivide()
         int i0 = tmp[0];
         int i1 = tmp[1];
         int i2 = tmp[2];
-
-        std::cout << "v at i0 " << glm::to_string(getVertex(i0)) << std::endl;
-        std::cout << "v at i1 " << glm::to_string(getVertex(i1)) << std::endl;
-        std::cout << "v at i2 " << glm::to_string(getVertex(i2)) << std::endl;
-
-
-        std::cout << "v at v0 " << glm::to_string(getVertex(v0)) << std::endl;
-        std::cout << "v at v1 " << glm::to_string(getVertex(v1)) << std::endl;
-        std::cout << "v at v2 " << glm::to_string(getVertex(v2)) << std::endl;
-
 
         tmpIndices.push_back(v0);
         tmpIndices.push_back(i0);

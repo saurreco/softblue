@@ -15,6 +15,7 @@ public:
     SphereMesh() {
         createIcosahedron();
         subdivide();
+        subdivide();
         genBuffers();
         initBuffers();
     }
