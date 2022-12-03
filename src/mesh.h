@@ -15,6 +15,7 @@ public:
 protected:
     virtual int pushVertex(glm::vec3 v, glm::vec3 vn);
     virtual void pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2) = 0;
+    glm::vec3 getVertex(int i);
 
     void genBuffers();
     void initBuffers();

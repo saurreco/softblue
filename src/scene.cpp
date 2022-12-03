@@ -46,7 +46,7 @@ void Scene::drawModel(Model model) {
     GLuint camPosLoc = glGetUniformLocation(shader, "camPos");
     ErrorThrowing::uniformNotFound(camPosLoc, "camPos");
     // TODOS: REPLACE WITH ACTUAL CAM POS
-    glm::vec3 camPos(3,3,3);
+    glm::vec3 camPos(0,0,-3);
     glUniform3fv(camPosLoc, 1, &camPos[0]);
 
     GLuint shininessLoc = glGetUniformLocation(shader, "shininess");
@@ -83,7 +83,7 @@ void Scene::drawModel(Model model) {
     // object colors ----------------------------------------------
 
     glBindVertexArray(model.geometry->vao);
-    glDrawElements(GL_TRIANGLE_STRIP, model.geometry->numIndices, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, model.geometry->numIndices, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
     glUseProgram(0);
 }
@@ -107,7 +107,7 @@ void Scene::matricesInit(int w, int h) {
     this->screenWidth = w;
     this->screenHeight = h;
     this->projMatrix = glm::perspective(45.0f, (this->screenWidth / (float)this->screenHeight), 0.1f, 100.0f);
-    this->viewMatrix = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    this->viewMatrix = glm::lookAt(glm::vec3(0, 0, -3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 }
 void Scene::sceneInit(int w, int h) {
     this->matricesInit(w, h);

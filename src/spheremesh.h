@@ -1,4 +1,5 @@
 #pragma once
+
 #include "mesh.h"
 #include <vector>
 #include <glm/glm.hpp>
@@ -13,7 +14,7 @@ class SphereMesh : public Mesh
 public:
     SphereMesh() {
         createIcosahedron();
-//        subdivide();
+        subdivide();
         genBuffers();
         initBuffers();
     }
@@ -23,5 +24,4 @@ public:
     void createIcosahedron();
 
 private:
-    std::map<std::pair<int, int>, int> edgeMap; // pair = (left, right)
 };

@@ -14,8 +14,5 @@ uniform mat4 normalTransformMatrix;
 void main() {
     wsNormal = vec3(normalTransformMatrix * vec4(normalize(vec4(osPos, 1))));
     wsPos = vec3(modelMatrix * vec4(osPos, 1));
-
-    wsPos = osPos;
-    wsNormal = normalize(osPos);
-    gl_Position = projMatrix * viewMatrix * vec4(osPos, 1);
+    gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(osPos, 1);
 }

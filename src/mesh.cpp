@@ -9,7 +9,11 @@ int Mesh::pushVertex(glm::vec3 v, glm::vec3 vn)
     vertices.push_back(vn.y);
     vertices.push_back(vn.z);
     this->numVertices++;
-    return numVertices;
+    return numVertices - 1;
+}
+
+glm::vec3 Mesh::getVertex(int i) {
+    return glm::vec3(vertices[i * 6], vertices[i * 6 + 1], vertices[i * 6 + 2]);
 }
 
 void Mesh::genBuffers() {
