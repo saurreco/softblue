@@ -36,6 +36,8 @@ private:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void timerEvent(QTimerEvent *event) override;
+    // movement helpers
+    glm::vec4 findKeyMovement();
 
     // Tick Related Variables
     int m_timer;                                        // Stores timer which attempts to run ~60 times per second

@@ -92,11 +92,21 @@ void Realtime::resizeGL(int w, int h) {
 // ================== Project 6: Action!
 
 void Realtime::keyPressEvent(QKeyEvent *event) {
-    m_keyMap[Qt::Key(event->key())] = true;
+    Qt::Key keyPressed = Qt::Key(event->key());
+    // if invalid key then ignore
+    if (keyPressed != Qt::Key::Key_W && keyPressed != Qt::Key::Key_A && keyPressed != Qt::Key::Key_S && keyPressed != Qt::Key::Key_D && keyPressed != Qt::Key::Key_Space && keyPressed != Qt::Key::Key_Control) {
+        return;
+    }
+    m_keyMap[keyPressed] = true;
 }
 
 void Realtime::keyReleaseEvent(QKeyEvent *event) {
-    m_keyMap[Qt::Key(event->key())] = false;
+    Qt::Key keyPressed = Qt::Key(event->key());
+    // if invalid key then ignore
+    if (keyPressed != Qt::Key::Key_W && keyPressed != Qt::Key::Key_A && keyPressed != Qt::Key::Key_S && keyPressed != Qt::Key::Key_D && keyPressed != Qt::Key::Key_Space && keyPressed != Qt::Key::Key_Control) {
+        return;
+    }
+    m_keyMap[keyPressed] = false;
 }
 
 void Realtime::mousePressEvent(QMouseEvent *event) {
@@ -113,8 +123,66 @@ void Realtime::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void Realtime::mouseMoveEvent(QMouseEvent *event) {
+    if (m_mouseDown) {
+        int posX = event->position().x();
+        int posY = event->position().y();
+        int deltaX = posX - m_prev_mouse_pos.x;
+        int deltaY = posY - m_prev_mouse_pos.y;
+        m_prev_mouse_pos = glm::vec2(posX, posY);
+
+        // Use deltaX and deltaY here to rotate
+        // speed? decided by theta! how about pi/4 every 1000 pixels moved
+        // rotate camera about axis (0,1,0)
+        // rotate camera about axis that is the right vector
+        // speedX = thetaX = deltaX/screen width * pi / 4
+        // speedY = thetaY = deltaX/screen width * pi / 4
+        // combine 2 rotation matrices
+        // update view matrix & related data
+
+        float thetaX = (float)deltaX / 1000.f * M_PI / 4;
+        glm::mat3 rotationX = this->scene->calcRotationMatrix(glm::vec3(0.f,1.f,0.f), thetaX);
+        float thetaY = (float)deltaY / 1000.f * M_PI / 4;
+        glm::mat3 rotationY = this->scene->calcRotationMatrix(this->scene->right, thetaY);
+        glm::mat3 combinedRotation = rotationX * rotationY;
+        this->scene->updateUpnLook(combinedRotation);
+        this->scene->initializeView();
+
+        update(); // asks for a PaintGL() call to occur
+    }
 }
 
 void Realtime::timerEvent(QTimerEvent *event) {
-    update();
+    int elapsedms   = m_elapsedTimer.elapsed();
+    float deltaTime = elapsedms * 0.001f;
+    m_elapsedTimer.restart();
+
+    // find length to move here
+    // if delta time is 0.2 then we move 1 unit! (1/5 of the standard number of units per second)
+    float noOfMovingWorldUnit = deltaTime * 5; // deltaTime is counted in seconds
+    // find which key is down
+    glm::vec4 returnedMovement = this->findKeyMovement();
+    if (returnedMovement == glm::vec4(0.f)) {
+        return; // no movement at all
+    }
+    // then get the normalized direction
+    glm::vec4 normalizedReturnedMovement = glm::normalize(returnedMovement);
+    // then move in the length we specified earlier
+    // change camera's pos
+    this->scene->updateCameraPos(noOfMovingWorldUnit * normalizedReturnedMovement);
+    // update view matrix
+    this->scene->initializeView();
+
+    update(); // asks for a PaintGL() call to occur
 }
+
+// MOVEMENT HELPERS ----------------------------------------------
+glm::vec4 Realtime::findKeyMovement() {
+    glm::vec4 totalDirection(0.f);
+    for (auto it = this->m_keyMap.begin(); it != this->m_keyMap.end(); ++it) {
+        if (it->second) { // if it's true => key is down
+             totalDirection += this->scene->getTranslation(it->first);
+        }
+    }
+    return totalDirection;
+}
+// MOVEMENT HELPERS ----------------------------------------------

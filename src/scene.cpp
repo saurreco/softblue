@@ -107,10 +107,96 @@ void Scene::matricesInit(int w, int h) {
     this->screenWidth = w;
     this->screenHeight = h;
     this->projMatrix = glm::perspective(45.0f, (this->screenWidth / (float)this->screenHeight), 0.1f, 100.0f);
-    this->viewMatrix = glm::lookAt(glm::vec3(0, 0, -3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+//    this->viewMatrix = glm::lookAt(glm::vec3(this->camera.pos), glm::vec3(this->camera.pos + this->camera.look), glm::vec3(this->camera.up));
+    this->initializeView();
 }
+
+/**
+ * @brief Scene::sceneInit initializes a TEST SCENE
+ * @param w
+ * @param h
+ */
 void Scene::sceneInit(int w, int h) {
+    this->cameraInit(w, h);
     this->matricesInit(w, h);
     this->initModel();
     this->addLight(glm::vec4(1.f), glm::vec4(3, 4, 5, 1), glm::vec4(0.f, -1.f, 0.f, 0.f));
+}
+
+// CAMERA FUNCTIONS ----------------------------
+void Scene::cameraInit(int w, int h) {
+    this->camera.up = glm::vec4(0, 1, 0, 0);
+    this->camera.pos = glm::vec4(0, 0, -3, 0);
+    this->camera.look = glm::vec4(0, 0, 3, 0);
+}
+
+/**
+ * @brief Scene::calcRotationMatrix
+ * @param axis is a normalized vector!
+ * @param theta is the rotation angle
+ */
+glm::mat3 Scene::calcRotationMatrix(glm::vec3 axis, float theta) {
+    float cos = glm::cos(theta);
+    float sin = glm::sin(theta);
+    float x = axis[0];
+    float y = axis[1];
+    float z = axis[2];
+    // initializing in row major
+    glm::mat3 rotationMatrix = glm::mat3(
+                cos + x*x*(1-cos), x*y*(1-cos) - z*sin, x*z*(1-cos) + y*sin,
+                x*y*(1-cos) + z*sin, cos + y*y*(1-cos), y*z*(1-cos) - x*sin,
+                x*z*(1-cos) - y*sin, y*z*(1-cos) + x*sin, cos + z*z*(1-cos)
+                );
+    return rotationMatrix;
+}
+
+/**
+ * @brief Scene::updateUpnLook update up * look vectors OF CAMERADATA
+ * @param rotationMatrix
+ */
+void Scene::updateUpnLook(glm::mat3 rotationMatrix) {
+    this->camera.look = glm::vec4(rotationMatrix * this->camera.look, 0.f);
+    this->camera.up = glm::vec4(rotationMatrix * this->camera.up, 0.f);
+}
+
+/**
+ * @brief Scene::initializeView initializes view-related stuff
+ * called in matricesInit()
+ */
+void Scene::initializeView() {
+    this->viewMatrix = glm::lookAt(glm::vec3(this->camera.pos), glm::vec3(this->camera.pos + this->camera.look), glm::vec3(this->camera.up));
+    this->inverseViewMatrix = glm::inverse(this->viewMatrix);
+    this->left = glm::cross(glm::vec3(this->camera.up), glm::vec3(this->camera.look));
+    this->right = glm::cross(glm::vec3(this->camera.look), glm::vec3(this->camera.up));
+}
+
+void Scene::updateCameraPos(glm::vec4 direction) {
+    this->camera.pos += direction;
+}
+
+glm::vec4 Scene::getTranslation(Qt::Key keyDown) {
+    switch (keyDown) {
+    case Qt::Key::Key_W:
+        return this->camera.look;
+        break;
+    case Qt::Key::Key_S:
+        return -this->camera.look;
+        break;
+    case Qt::Key::Key_A:
+        return glm::vec4(this->left, 0.f);
+        break;
+    case Qt::Key::Key_D:
+        return glm::vec4(this->right, 0.f);
+        break;
+    case Qt::Key::Key_Space:
+        return glm::vec4(0.f, 1.0f, 0.f, 0.f);
+        break;
+    case Qt::Key::Key_Control:
+        return glm::vec4(0.f, -1.0f, 0.f, 0.f);
+        break;
+    default:
+        std::cerr << "Key invalid!" << std::endl;
+        return glm::vec4(0.f,0.f,0.f,0.f);
+        break;
+    }
 }
