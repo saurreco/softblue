@@ -73,7 +73,7 @@ void Realtime::initializeGL() {
     // Students: anything requiring OpenGL calls when the program starts should be done here
 
     /* setup scene */
-    shader->set(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
+    shader->set(":/shaders/default.vert", ":/shaders/default.frag");
     scene->addModel(new SphereMesh(),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
