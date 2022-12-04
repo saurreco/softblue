@@ -2,14 +2,6 @@
 #include <tuple>
 #include <glm/gtx/string_cast.hpp>
 
-/**
- * @brief add a triangle to vertex buffer, where vertices 0, 1 & 2 follow a counterclockwise order
- *
- * @param v0
- * @param v1
- * @param v2
- */
-
 void SphereMesh::pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
 {
     int i0 = this->pushVertex(v0, glm::normalize(v0)); // this normalization is unnecessary

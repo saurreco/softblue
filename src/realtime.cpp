@@ -9,9 +9,9 @@
 #include "glm/gtx/transform.hpp"
 #include <glm/gtx/string_cast.hpp>
 
-#include "utils/sceneparser.h"
 #include "utils/shaderloader.h"
 #include "debug.h"
+#include "cubemesh.h"
 
 // ================== Project 5: Lights, Camera
 
@@ -49,6 +49,8 @@ void Realtime::initializeGL() {
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
     this->scene = new Scene();
+    this->camera = new Camera();
+    this->shader = new Shader();
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -70,14 +72,20 @@ void Realtime::initializeGL() {
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     // Students: anything requiring OpenGL calls when the program starts should be done here
 
-    // Shader setup (DO NOT EDIT)
-    this->scene->shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
-    this->scene->sceneInit(m_width, m_height);
+    /* setup scene */
+    shader->set(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
+    scene->addModel(new SphereMesh(),
+                    glm::vec4(0, 0.5, 0, 1),
+                    glm::vec4(0, 1, 0, 1),
+                    glm::vec4(0, 1, 0, 1));
+    scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
+    camera->init(m_width, m_height, glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
 }
 
 void Realtime::paintGL() {
     // paint here
-    this->scene->drawModel(this->scene->testModel); // TESTING
+    this->scene->drawScene(shader, camera);
 }
 
 void Realtime::resizeGL(int w, int h) {
@@ -86,7 +94,7 @@ void Realtime::resizeGL(int w, int h) {
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
     // update w & h in Scene, construct matrices elsewhere in scene & not in constructor
-    this->scene->matricesInit(m_width, m_height);
+    camera->setFrustum(w, h);
 }
 
 // ================== Project 6: Action!
@@ -94,7 +102,12 @@ void Realtime::resizeGL(int w, int h) {
 void Realtime::keyPressEvent(QKeyEvent *event) {
     Qt::Key keyPressed = Qt::Key(event->key());
     // if invalid key then ignore
-    if (keyPressed != Qt::Key::Key_W && keyPressed != Qt::Key::Key_A && keyPressed != Qt::Key::Key_S && keyPressed != Qt::Key::Key_D && keyPressed != Qt::Key::Key_Space && keyPressed != Qt::Key::Key_Control) {
+    if (keyPressed != Qt::Key::Key_W &&
+        keyPressed != Qt::Key::Key_A &&
+        keyPressed != Qt::Key::Key_S &&
+        keyPressed != Qt::Key::Key_D &&
+        keyPressed != Qt::Key::Key_Space &&
+        keyPressed != Qt::Key::Key_Control) {
         return;
     }
     m_keyMap[keyPressed] = true;
@@ -103,7 +116,12 @@ void Realtime::keyPressEvent(QKeyEvent *event) {
 void Realtime::keyReleaseEvent(QKeyEvent *event) {
     Qt::Key keyPressed = Qt::Key(event->key());
     // if invalid key then ignore
-    if (keyPressed != Qt::Key::Key_W && keyPressed != Qt::Key::Key_A && keyPressed != Qt::Key::Key_S && keyPressed != Qt::Key::Key_D && keyPressed != Qt::Key::Key_Space && keyPressed != Qt::Key::Key_Control) {
+    if (keyPressed != Qt::Key::Key_W &&
+        keyPressed != Qt::Key::Key_A &&
+        keyPressed != Qt::Key::Key_S &&
+        keyPressed != Qt::Key::Key_D &&
+        keyPressed != Qt::Key::Key_Space &&
+        keyPressed != Qt::Key::Key_Control) {
         return;
     }
     m_keyMap[keyPressed] = false;
@@ -124,6 +142,7 @@ void Realtime::mouseReleaseEvent(QMouseEvent *event) {
 
 void Realtime::mouseMoveEvent(QMouseEvent *event) {
     if (m_mouseDown) {
+        /*
         int posX = event->position().x();
         int posY = event->position().y();
         int deltaX = posX - m_prev_mouse_pos.x;
@@ -140,13 +159,13 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
         // update view matrix & related data
 
         float thetaX = (float)deltaX / 1000.f * M_PI / 4;
-        glm::mat3 rotationX = this->scene->calcRotationMatrix(glm::vec3(0.f,1.f,0.f), thetaX);
+        glm::mat3 rotationX = glm::rotate(glm::vec3(0.f,1.f,0.f), thetaX);
         float thetaY = (float)deltaY / 1000.f * M_PI / 4;
-        glm::mat3 rotationY = this->scene->calcRotationMatrix(this->scene->right, thetaY);
+        glm::mat3 rotationY = glm::rotate(this->scene->right, thetaY);
         glm::mat3 combinedRotation = rotationX * rotationY;
         this->scene->updateUpnLook(combinedRotation);
         this->scene->initializeView();
-
+            */
         update(); // asks for a PaintGL() call to occur
     }
 }
@@ -155,7 +174,7 @@ void Realtime::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
     m_elapsedTimer.restart();
-
+/*
     // find length to move here
     // if delta time is 0.2 then we move 1 unit! (1/5 of the standard number of units per second)
     float noOfMovingWorldUnit = deltaTime * 5; // deltaTime is counted in seconds
@@ -171,7 +190,7 @@ void Realtime::timerEvent(QTimerEvent *event) {
     this->scene->updateCameraPos(noOfMovingWorldUnit * normalizedReturnedMovement);
     // update view matrix
     this->scene->initializeView();
-
+*/
     update(); // asks for a PaintGL() call to occur
 }
 
@@ -180,7 +199,7 @@ glm::vec4 Realtime::findKeyMovement() {
     glm::vec4 totalDirection(0.f);
     for (auto it = this->m_keyMap.begin(); it != this->m_keyMap.end(); ++it) {
         if (it->second) { // if it's true => key is down
-             totalDirection += this->scene->getTranslation(it->first);
+            // totalDirection += this->scene->getTranslation(it->first);
         }
     }
     return totalDirection;

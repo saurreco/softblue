@@ -29,27 +29,27 @@ add_executable(${PROJECT_NAME}
 
     src/realtime.cpp
     src/mainwindow.cpp
-    src/utils/scenefilereader.cpp
-    src/utils/sceneparser.cpp
-
     src/debug.h
     src/utils/errorthrowing.h
 
     src/mainwindow.h
     src/realtime.h
-    src/utils/scenedata.h
-    src/utils/scenefilereader.h
-    src/utils/sceneparser.h
     src/utils/shaderloader.h
 
     # softblue specific classes
     src/scene.cpp
     src/mesh.cpp
     src/spheremesh.cpp
+    src/cubemesh.cpp
+    src/shader.cpp
+    src/camera.cpp
 
     src/scene.h
     src/mesh.h
     src/spheremesh.h
+    src/cubemesh.h
+    src/shader.h
+    src/camera.h
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`

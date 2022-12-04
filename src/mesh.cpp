@@ -1,4 +1,6 @@
 #include "mesh.h"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/transform.hpp"
 
 int Mesh::pushVertex(glm::vec3 v, glm::vec3 vn)
 {
@@ -14,6 +16,30 @@ int Mesh::pushVertex(glm::vec3 v, glm::vec3 vn)
 
 glm::vec3 Mesh::getVertex(int i) {
     return glm::vec3(vertices[i * 6], vertices[i * 6 + 1], vertices[i * 6 + 2]);
+}
+
+glm::vec3 Mesh::getNormal(int i) {
+    return glm::vec3(vertices[i * 6 + 3], vertices[i * 6 + 4], vertices[i * 6 + 5]);
+}
+
+void Mesh::setVertex(int i, glm::vec3 pos) {
+    this->vertices[i * 6] = pos.x;
+    this->vertices[i * 6 + 1] = pos.y;
+    this->vertices[i * 6 + 2] = pos.z;
+}
+
+void Mesh::setNormal(int i, glm::vec3 normal) {
+    this->vertices[i * 6 + 3] = normal.x;
+    this->vertices[i * 6 + 4] = normal.y;
+    this->vertices[i * 6 + 5] = normal.z;
+}
+
+void Mesh::buildGeometry(glm::mat4 model) {
+    glm::mat4 normalMatrix = glm::mat4(glm::inverse(glm::transpose(glm::mat3(model))));
+    for (int i = 0; i < numVertices; i++) {
+        setVertex(i, glm::vec3(model * glm::vec4(getVertex(i), 1)));
+        setNormal(i, glm::vec3(normalMatrix * glm::vec4(getNormal(i), 0)));
+    }
 }
 
 void Mesh::genBuffers() {

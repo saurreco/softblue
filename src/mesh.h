@@ -6,6 +6,11 @@
 class Mesh
 {
 public:
+    glm::vec3 getVertex(int i);
+    glm::vec3 getNormal(int i);
+    void setVertex(int i, glm::vec3 pos);
+    void setNormal(int i, glm::vec3 normal);
+
     GLuint vao;
     GLuint vbo;
     GLuint ebo;
@@ -15,8 +20,8 @@ public:
 protected:
     virtual int pushVertex(glm::vec3 v, glm::vec3 vn);
     virtual void pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2) = 0;
-    glm::vec3 getVertex(int i);
 
+    void buildGeometry(glm::mat4 model);
     void genBuffers();
     void initBuffers();
     void deleteBuffers();

@@ -8,20 +8,18 @@
 #include <utility>
 #include <GL/glew.h>
 
-class SphereMesh : public Mesh
+class CubeMesh : public Mesh
 {
 public:
-    SphereMesh() {
-        createIcosahedron();
-        subdivide();
-        subdivide();
+    CubeMesh() {
+        createCube();
         buildGeometry(glm::mat4(1));
         genBuffers();
         initBuffers();
     }
     void pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2);
-    void createIcosahedron();
-    void subdivide();
+    void pushFace(glm::vec3 upLeft, glm::vec3 upRight, glm::vec3 downLeft, glm::vec3 downRight);
+    void createCube();
 
 private:
 };

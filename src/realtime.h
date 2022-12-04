@@ -13,6 +13,8 @@
 #include <QTime>
 #include <QTimer>
 #include "scene.h"
+#include "shader.h"
+#include "camera.h"
 
 class Realtime : public QOpenGLWidget
 {
@@ -51,11 +53,14 @@ private:
     // Device Correction Variables
     int m_devicePixelRatio;
 
+
     int m_width; // of screen
     int m_height; // of screen
 
 //    GLuint m_shader;
 
     // Scene
+    Shader* shader;
+    Camera* camera;
     Scene* scene;
 };
