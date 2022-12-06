@@ -10,16 +10,52 @@ void Camera::setFrustum(int w, int h) {
     this->screenHeight = h;
     this->proj = glm::perspective(45.0f, (w / (float)h), 1.0f, 100.0f);
     this->viewProj = proj * view;
-
-
 }
 
 void Camera::setView(glm::vec3 pos, glm::vec3 look, glm::vec3 up) {
     this->pos = pos;
     this->look = look;
     this->up = up;
-    this->view = glm::lookAt(pos, look, up);
+    this->view = glm::lookAt(pos, pos + look, up);
     this->viewProj = proj * view;
+    this->left = glm::cross(glm::vec3(this->up), glm::vec3(this->look));
+    this->right = glm::cross(glm::vec3(this->look), glm::vec3(this->up));
+}
+
+void Camera::updateUpnLook(glm::mat3 rotationMatrix) {
+    this->look = rotationMatrix * this->look;
+    this->up = rotationMatrix * this->up;
+}
+
+void Camera::updateCameraPos(glm::vec3 direction) {
+    this->pos += direction;
+}
+
+glm::vec3 Camera::getTranslation(Qt::Key keyDown) {
+    switch (keyDown) {
+    case Qt::Key::Key_W:
+        return this->look;
+        break;
+    case Qt::Key::Key_S:
+        return -this->look;
+        break;
+    case Qt::Key::Key_A:
+        return this->left;
+        break;
+    case Qt::Key::Key_D:
+        return this->right;
+        break;
+    case Qt::Key::Key_Space:
+        return glm::vec3(0.f, 1.0f, 0.f);
+        break;
+    case Qt::Key::Key_Control:
+        return glm::vec3(0.f, -1.0f, 0.f);
+        break;
+    default:
+        std::cerr << "Key invalid!" << std::endl;
+        return glm::vec3(0.f,0.f,0.f);
+        break;
+    }
 }
 
 

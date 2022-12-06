@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
+#include <QOpenGLWidget>
+#include <iostream>
+
 class Camera {
 public:
     Camera(){
@@ -14,11 +17,16 @@ public:
     void init(int w, int h, glm::vec3 pos, glm::vec3 look, glm::vec3 up);
     void setFrustum(int w, int h);
     void setView(glm::vec3 pos, glm::vec3 look, glm::vec3 up);
+    void updateCameraPos(glm::vec3 direction);
+    glm::vec3 getTranslation(Qt::Key keyDown);
+    void updateUpnLook(glm::mat3 rotationMatrix);
 
     glm::vec3 pos;
     glm::vec3 look;
     glm::vec3 up;
     glm::mat4 viewProj;
+    glm::vec3 left;
+    glm::vec3 right;
 private:
     int screenWidth;
     int screenHeight;
