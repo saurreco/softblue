@@ -25,10 +25,12 @@ void Camera::setView(glm::vec3 pos, glm::vec3 look, glm::vec3 up) {
 void Camera::updateUpnLook(glm::mat3 rotationMatrix) {
     this->look = rotationMatrix * this->look;
     this->up = rotationMatrix * this->up;
+    setView(pos, look, up);
 }
 
 void Camera::updateCameraPos(glm::vec3 direction) {
     this->pos += direction;
+    setView(pos, look, up);
 }
 
 glm::vec3 Camera::getTranslation(Qt::Key keyDown) {

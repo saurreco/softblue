@@ -150,13 +150,12 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
         m_prev_mouse_pos = glm::vec2(posX, posY);
 
         // Use deltaX and deltaY here to rotate
-        float thetaX = (float)deltaX / 1000.f * M_PI / 4;
+        float thetaX = -(float)deltaX / 1000.f * M_PI / 4;
         glm::mat4 rotationX = glm::rotate(thetaX, glm::vec3(0.f,1.f,0.f));
-        float thetaY = (float)deltaY / 1000.f * M_PI / 4;
+        float thetaY = -(float)deltaY / 1000.f * M_PI / 4;
         glm::mat4 rotationY = glm::rotate(thetaY, this->camera->right);
         glm::mat3 combinedRotation = rotationX * rotationY;
         this->camera->updateUpnLook(combinedRotation);
-        this->camera->setView(this->camera->pos, this->camera->look, this->camera->up);
 //            */
         update(); // asks for a PaintGL() call to occur
     }
@@ -181,7 +180,6 @@ void Realtime::timerEvent(QTimerEvent *event) {
     // change camera's pos
     this->camera->updateCameraPos(noOfMovingWorldUnit * normalizedReturnedMovement);
     // update view matrix
-    this->camera->setView(this->camera->pos, this->camera->look, this->camera->up);
 //*/
     update(); // asks for a PaintGL() call to occur
 }
