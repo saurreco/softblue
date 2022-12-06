@@ -12,6 +12,7 @@
 #include "utils/shaderloader.h"
 #include "debug.h"
 #include "cubemesh.h"
+#include "physics.h"
 
 // ================== Project 5: Lights, Camera
 
@@ -51,6 +52,7 @@ void Realtime::initializeGL() {
     this->scene = new Scene();
     this->camera = new Camera();
     this->shader = new Shader();
+    this->physics = new Physics();
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -82,10 +84,15 @@ void Realtime::initializeGL() {
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
     camera->init(m_width, m_height, glm::vec3(0, 0, 3), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
+<<<<<<< HEAD
+=======
+    physics->init(scene);
+>>>>>>> e8de0dc (started physics class)
 }
 
 void Realtime::paintGL() {
     // paint here
+    physics->update(0.4);
     this->scene->drawScene(shader, camera);
 }
 

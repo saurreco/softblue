@@ -29,11 +29,12 @@ public:
     void setLight(glm::vec4 color, glm::vec3 dir);
     void setupCubemap();
 
+    std::vector<Model> models;
+
 private:
     void drawModel(Shader* shader, Camera* camera, Model model);
 
     Light light;
-    std::vector<Model> models;
     int screenWidth;
     int screenHeight;
     Cubemap* cubemap = new Cubemap();

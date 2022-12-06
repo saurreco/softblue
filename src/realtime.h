@@ -15,6 +15,7 @@
 #include "scene.h"
 #include "shader.h"
 #include "camera.h"
+#include "physics.h"
 
 class Realtime : public QOpenGLWidget
 {
@@ -63,4 +64,5 @@ private:
     Shader* shader;
     Camera* camera;
     Scene* scene;
+    Physics* physics;
 };
