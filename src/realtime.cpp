@@ -78,6 +78,8 @@ void Realtime::initializeGL() {
     shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
     scene->addModel(new SphereMesh(),
+    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
                     glm::vec4(0, 1, 0, 1));
@@ -169,6 +171,7 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
 void Realtime::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
+    physics->update(deltaTime);
     m_elapsedTimer.restart();
 ///*
     // find length to move here

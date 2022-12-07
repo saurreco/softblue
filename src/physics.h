@@ -9,8 +9,7 @@ struct MassPoint {
 };
 
 struct Spring {
-    MassPoint* A;
-    MassPoint* B;
+    int A, B;
     float L;  /* rest length */
 };
 
