@@ -12,6 +12,7 @@
 #include "utils/shaderloader.h"
 #include "debug.h"
 #include "cubemesh.h"
+#include "physics.h"
 
 // ================== Project 5: Lights, Camera
 
@@ -51,6 +52,7 @@ void Realtime::initializeGL() {
     this->scene = new Scene();
     this->camera = new Camera();
     this->shader = new Shader();
+    this->physics = new Physics();
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -75,13 +77,18 @@ void Realtime::initializeGL() {
     /* setup scene */
     shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
-    scene->addModel(new SphereMesh(),
+//    scene->addModel(new SphereMesh(),
+    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
+    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
                     glm::vec4(0, 1, 0, 1));
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
-    camera->init(m_width, m_height, glm::vec3(0, 0, 3), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
+    camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
+    physics->init(scene);
 }
 
 void Realtime::paintGL() {
@@ -165,8 +172,9 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
 void Realtime::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
+    physics->update(deltaTime);
     m_elapsedTimer.restart();
-///*
+/*
     // find length to move here
     // if delta time is 0.2 then we move 1 unit! (1/5 of the standard number of units per second)
     float noOfMovingWorldUnit = deltaTime * 5; // deltaTime is counted in seconds

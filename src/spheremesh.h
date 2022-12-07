@@ -11,6 +11,16 @@
 class SphereMesh : public Mesh
 {
 public:
+    SphereMesh(glm::mat4 model) {
+        createIcosahedron();
+        subdivide();
+        subdivide();
+        subdivide();
+
+        buildGeometry(model);
+        genBuffers();
+        initBuffers();
+    }
     SphereMesh() {
         createIcosahedron();
         subdivide();
@@ -19,6 +29,8 @@ public:
         genBuffers();
         initBuffers();
     }
+    std::map<std::tuple<float, float, float>, int> visited;
+
     void pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2);
     void createIcosahedron();
     void subdivide();
