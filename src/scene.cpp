@@ -2,10 +2,17 @@
 #include <glm/gtx/string_cast.hpp>
 
 void Scene::drawScene(Shader* shader, Camera* camera) {
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, this->cubemap->cubemap_texture);
     for (Model model : models) {
         drawModel(shader, camera, model);
     }
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    glBindVertexArray(0);
+
     // CUBEMAP ---------------------------------------------------------
     glDepthMask(GL_FALSE);
     shader->bind(ShaderType::CUBEMAP_SHADER);
@@ -21,6 +28,8 @@ void Scene::drawModel(Shader* shader, Camera* camera, Model model) {
     shader->bind(ShaderType::MAIN_SHADER);
 
     // UNIFORMS -----------------------------------------------------------
+    /* cubemap texture */
+    shader->addUniformInt(ShaderType::MAIN_SHADER, "cubemap_texture", 0);
 
     /* viewproj matrix */
     shader->addUniformMat4(ShaderType::MAIN_SHADER, "viewProj", camera->viewProj);
