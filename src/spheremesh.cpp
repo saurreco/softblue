@@ -4,9 +4,27 @@
 
 void SphereMesh::pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
 {
-    int i0 = this->pushVertex(v0, glm::normalize(v0)); // this normalization is unnecessary
-    int i1 = this->pushVertex(v1, glm::normalize(v1));
-    int i2 = this->pushVertex(v2, glm::normalize(v2));
+    int i0, i1, i2;
+    if (visited.find(std::make_tuple(v0.x, v0.y, v0.z)) != visited.end()) {
+        i0 = visited[std::make_tuple(v0.x, v0.y, v0.z)];
+    } else {
+        i0 = this->pushVertex(v0, v0); // this normalization is unnecessary
+        visited[std::make_tuple(v0.x, v0.y, v0.z)] = i0;
+    }
+
+    if (visited.find(std::make_tuple(v1.x, v1.y, v1.z)) != visited.end()) {
+        i1 = visited[std::make_tuple(v1.x, v1.y, v1.z)];
+    } else {
+        i1 = this->pushVertex(v1, v1); // this normalization is unnecessary
+        visited[std::make_tuple(v1.x, v1.y, v1.z)] = i1;
+    }
+
+    if (visited.find(std::make_tuple(v2.x, v2.y, v2.z)) != visited.end()) {
+        i2 = visited[std::make_tuple(v2.x, v2.y, v2.z)];
+    } else {
+        i2 = this->pushVertex(v2, v2); // this normalization is unnecessary
+        visited[std::make_tuple(v2.x, v2.y, v2.z)] = i2;
+    }
     this->indices.push_back(i0);
     this->indices.push_back(i1);
     this->indices.push_back(i2);
@@ -93,7 +111,14 @@ void SphereMesh::subdivide()
                 glm::vec3 v = 0.5f * (v0 + v1);
 
                 glm::vec3 vn = normalize(v);
-                int idx = pushVertex(vn, vn);
+                int idx = 0;
+                if (visited.find(std::make_tuple(vn.x, vn.y, vn.z)) != visited.end()) {
+                    idx = visited[std::make_tuple(vn.x, vn.y, vn.z)];
+                } else {
+                    idx = this->pushVertex(vn, vn); // this normalization is unnecessary
+                    visited[std::make_tuple(vn.x, vn.y, vn.z)] = idx;
+                }
+
                 tmp.push_back(idx);
                 edgeMap[e] = idx;
             }

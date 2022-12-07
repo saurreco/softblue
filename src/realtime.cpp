@@ -79,7 +79,9 @@ void Realtime::initializeGL() {
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
     scene->addModel(new SphereMesh(),
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
-    scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
+    // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
+    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
                     glm::vec4(0, 1, 0, 1));

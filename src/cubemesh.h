@@ -3,7 +3,6 @@
 #include "mesh.h"
 #include <vector>
 #include <glm/glm.hpp>
-#include <tuple>
 #include <map>
 #include <utility>
 #include <GL/glew.h>
@@ -11,6 +10,7 @@
 class CubeMesh : public Mesh
 {
 public:
+    std::map<std::tuple<float, float, float>, int> visited;
     CubeMesh() {
         createCube();
         buildGeometry(glm::mat4(1));

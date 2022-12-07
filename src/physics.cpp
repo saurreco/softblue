@@ -66,7 +66,7 @@ void Physics::applyPhysics(float dt) {
         for (Spring& spring : body.springs) {
             MassPoint& massA = body.masses[spring.A];
             MassPoint& massB = body.masses[spring.B];
-            float fs = 0.1 * (glm::length(massB.r - massA.r) - spring.L);
+            float fs = 50.0f * (glm::length(massB.r - massA.r) - spring.L);
             glm::vec3 AtoB = glm::normalize(massB.r - massA.r);
             glm::vec3 BtoA = glm::normalize(massA.r - massB.r);
             float fta = fs + glm::dot(AtoB, massB.v - massA.v) * 0.5;
@@ -75,7 +75,6 @@ void Physics::applyPhysics(float dt) {
             massB.f += BtoA * ftb;
         }
 
-
         for (MassPoint& mass : body.masses) {
             mass.v += (mass.f * dt) / mass.m;
             mass.r += mass.v * dt; // integration
@@ -83,7 +82,7 @@ void Physics::applyPhysics(float dt) {
             /* collision */
             if (mass.r.y <= -5.0f) {
                 mass.r.y = -5.0f;
-                mass.v = 0.5f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
+                mass.v = 0.0f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
             }
         }
     }
