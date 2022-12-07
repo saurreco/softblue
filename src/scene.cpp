@@ -67,11 +67,11 @@ void Scene::setLight(glm::vec4 color, glm::vec3 dir) {
 
 void Scene::setupCubemap() {
     this->cubemap->initCubeMap(); // initialization
-    const char* front = "/Users/os/Documents/CS-Classes/cs1230/projects/softblue/skybox/back.jpg";
-    const char* back = "/Users/os/Documents/CS-Classes/cs1230/projects/softblue/skybox/front.jpg";
-    const char* left = "/Users/os/Documents/CS-Classes/cs1230/projects/softblue/skybox/left.jpg";
-    const char* right = "/Users/os/Documents/CS-Classes/cs1230/projects/softblue/skybox/right.jpg";
-    const char* top = "/Users/os/Documents/CS-Classes/cs1230/projects/softblue/skybox/top.jpg";
-    const char* bottom = "/Users/os/Documents/CS-Classes/cs1230/projects/softblue/skybox/bottom.jpg";
+    const char* front = "/ifs/CS/replicated/home/tdougan1/csci-1230/softblue/skybox/back.jpg";
+    const char* back = "/ifs/CS/replicated/home/tdougan1/csci-1230/softblue/skybox/front.jpg";
+    const char* left = "/ifs/CS/replicated/home/tdougan1/csci-1230/softblue/skybox/left.jpg";
+    const char* right = "/ifs/CS/replicated/home/tdougan1/csci-1230/softblue/skybox/right.jpg";
+    const char* top = "/ifs/CS/replicated/home/tdougan1/csci-1230/softblue/skybox/top.jpg";
+    const char* bottom = "/ifs/CS/replicated/home/tdougan1/csci-1230/softblue/skybox/bottom.jpg";
     this->cubemap->fillCubeMap(front, back, top, bottom, left, right);
 }

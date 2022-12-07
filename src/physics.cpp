@@ -82,7 +82,7 @@ void Physics::applyPhysics(float dt) {
             /* collision */
             if (mass.r.y <= -5.0f) {
                 mass.r.y = -5.0f;
-                mass.v = 0.0f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
+                mass.v = 0.3f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
             }
         }
     }
