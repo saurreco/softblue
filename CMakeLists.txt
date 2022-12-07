@@ -22,6 +22,7 @@ find_package(Qt6 REQUIRED COMPONENTS Xml)
 
 # Allows you to include files from within those directories, without prefixing their filepaths
 include_directories(src)
+#include_directories(images)
 
 # Specifies .cpp and .h files to be passed to the compiler
 add_executable(${PROJECT_NAME}
@@ -43,6 +44,7 @@ add_executable(${PROJECT_NAME}
     src/cubemesh.cpp
     src/shader.cpp
     src/camera.cpp
+    src/cubemap.cpp
 
     src/scene.h
     src/mesh.h
@@ -50,6 +52,8 @@ add_executable(${PROJECT_NAME}
     src/cubemesh.h
     src/shader.h
     src/camera.h
+    src/cubemap.h
+    src/utils/stb_image.h
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`
@@ -76,6 +80,9 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
     FILES
         shaders/default.frag
         shaders/default.vert
+
+        shaders/cubemap.frag
+        shaders/cubemap.vert
 )
 
 # GLEW: this provides support for Windows (including 64-bit)

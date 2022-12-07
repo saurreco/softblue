@@ -73,14 +73,15 @@ void Realtime::initializeGL() {
     // Students: anything requiring OpenGL calls when the program starts should be done here
 
     /* setup scene */
-    shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
+    shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
     scene->addModel(new SphereMesh(),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
                     glm::vec4(0, 1, 0, 1));
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
+    scene->setupCubemap();
     camera->init(m_width, m_height, glm::vec3(0, 0, 3), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
-
 }
 
 void Realtime::paintGL() {

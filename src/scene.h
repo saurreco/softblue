@@ -8,6 +8,7 @@
 #include <QOpenGLWidget>
 #include "shader.h"
 #include "camera.h"
+#include "cubemap.h"
 
 struct Model {
     Mesh* geometry;
@@ -26,6 +27,7 @@ public:
     void drawScene(Shader* shader, Camera* camera);
     void addModel(Mesh* mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
     void setLight(glm::vec4 color, glm::vec3 dir);
+    void setupCubemap();
 
 private:
     void drawModel(Shader* shader, Camera* camera, Model model);
@@ -34,4 +36,5 @@ private:
     std::vector<Model> models;
     int screenWidth;
     int screenHeight;
+    Cubemap* cubemap = new Cubemap();
 };

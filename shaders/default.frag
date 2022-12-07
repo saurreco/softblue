@@ -13,6 +13,8 @@ uniform vec4 ambient;
 uniform vec4 diffuse;
 uniform vec4 specular;
 
+uniform samplerCube cubemap_texture;
+
 float clamp(float v) {
     return max(0, min(1, v));
 }
@@ -37,4 +39,11 @@ void main() {
     fragColor += specular;
     fragColor += ambient;
     fragColor += diffuse;
+
+    // environment mapping
+    vec3 camToPos = normalize(wsPos - camPos);
+    vec3 reflected = reflect(camToPos, normalize(wsNormal));
+    vec4 enviColor = vec4(texture(cubemap_texture, reflected).rgb, 1.0f);
+
+    fragColor = mix(fragColor, enviColor, 0.7);
 }
