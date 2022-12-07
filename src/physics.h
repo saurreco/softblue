@@ -8,8 +8,15 @@ struct MassPoint {
     float m;
 };
 
+struct Spring {
+    MassPoint* A;
+    MassPoint* B;
+    float L;  /* rest length */
+};
+
 struct Body {
     std::vector<MassPoint> masses;
+    std::vector<Spring> springs;
 };
 
 class Physics {
@@ -18,6 +25,8 @@ public:
     void update(float dt);
     Scene* scene;
     std::vector<Body> bodies;
+    float stiffness;
+    float damping;
 private:
     void applyPhysics(float dt);
     void updateScene();

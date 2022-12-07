@@ -84,10 +84,7 @@ void Realtime::initializeGL() {
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
     camera->init(m_width, m_height, glm::vec3(0, 0, 3), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
-<<<<<<< HEAD
-=======
     physics->init(scene);
->>>>>>> e8de0dc (started physics class)
 }
 
 void Realtime::paintGL() {
