@@ -22,7 +22,8 @@ find_package(Qt6 REQUIRED COMPONENTS Xml)
 
 # Allows you to include files from within those directories, without prefixing their filepaths
 include_directories(src)
-#include_directories(images)
+
+# include_directories(images)
 
 # Specifies .cpp and .h files to be passed to the compiler
 add_executable(${PROJECT_NAME}
@@ -47,6 +48,7 @@ add_executable(${PROJECT_NAME}
     src/cubemap.cpp
     src/physics.cpp
     src/dynamiccubemap.cpp
+    src/tetmesh.cpp
 
     src/scene.h
     src/mesh.h
@@ -58,6 +60,7 @@ add_executable(${PROJECT_NAME}
     src/utils/stb_image.h
     src/physics.h
     src/dynamiccubemap.h
+    src/tetmesh.h
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`
@@ -80,29 +83,30 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # Specifies other files
 qt6_add_resources(${PROJECT_NAME} "Resources"
     PREFIX
-        "/"
+    "/"
     FILES
-        shaders/default.frag
-        shaders/default.vert
+    shaders/default.frag
+    shaders/default.vert
 
-        shaders/cubemap.frag
-        shaders/cubemap.vert
+    shaders/cubemap.frag
+    shaders/cubemap.vert
 )
 
 # GLEW: this provides support for Windows (including 64-bit)
-if (WIN32)
-  add_compile_definitions(GLEW_STATIC)
-  target_link_libraries(${PROJECT_NAME} PRIVATE
-    opengl32
-    glu32
-  )
+if(WIN32)
+    add_compile_definitions(GLEW_STATIC)
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        opengl32
+        glu32
+    )
 endif()
 
 # Set this flag to silence warnings on Windows
-if (MSVC OR MSYS OR MINGW)
-  set(CMAKE_CXX_FLAGS "-Wno-volatile")
+if(MSVC OR MSYS OR MINGW)
+    set(CMAKE_CXX_FLAGS "-Wno-volatile")
 endif()
+
 # Set this flag to silence warnings on MacOS
-if (APPLE)
-  set(CMAKE_CXX_FLAGS "-Wno-deprecated-volatile")
+if(APPLE)
+    set(CMAKE_CXX_FLAGS "-Wno-deprecated-volatile")
 endif()

@@ -150,8 +150,8 @@ void Scene::drawScene(Shader* shader, Camera* camera) {
     shader->bind(ShaderType::CUBEMAP_SHADER);
     // camera->viewProj
     shader->addUniformMat4(ShaderType::CUBEMAP_SHADER, "viewProj", camera->viewProj); /* viewproj matrix */
-    shader->addUniformInt(ShaderType::CUBEMAP_SHADER, "cubemap_texture", 0);
-    this->cubemap->drawCubeMap();
+//    shader->addUniformInt(ShaderType::CUBEMAP_SHADER, "cubemap_texture", 0);
+  //  this->cubemap->drawCubeMap();
     shader->unbind();
     glDepthMask(GL_TRUE);
     // CUBEMAP ---------------------------------------------------------
@@ -162,7 +162,7 @@ void Scene::drawModel(Shader* shader, Camera* camera, Model model) {
 
     // UNIFORMS -----------------------------------------------------------
     /* cubemap texture */
-    shader->addUniformInt(ShaderType::MAIN_SHADER, "cubemap_texture", 0);
+  //  shader->addUniformInt(ShaderType::MAIN_SHADER, "cubemap_texture", 0);
 
     /* viewproj matrix */
     shader->addUniformMat4(ShaderType::MAIN_SHADER, "viewProj", camera->viewProj);

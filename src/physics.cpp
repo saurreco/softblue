@@ -16,6 +16,11 @@ void Physics::init(Scene* scene) {
             mass.v = glm::vec3(0, 0, 0);
             mass.f = glm::vec3(0, 0, 0);
             mass.r = model.geometry->getVertex(i);
+            if (mass.r.y > 5) {
+                mass.debug = 1;
+            } else {
+                mass.debug = 0;
+            }
             body.masses.push_back(mass);
         }
 
@@ -55,7 +60,7 @@ void Physics::update(float dt) {
 }
 
 void Physics::applyPhysics(float dt) {
-
+    int i = 0;
     for (Body& body : bodies) {
 
         for (MassPoint& mass : body.masses) {
@@ -66,25 +71,66 @@ void Physics::applyPhysics(float dt) {
         for (Spring& spring : body.springs) {
             MassPoint& massA = body.masses[spring.A];
             MassPoint& massB = body.masses[spring.B];
-            float fs = 50.0f * (glm::length(massB.r - massA.r) - spring.L);
-            glm::vec3 AtoB = glm::normalize(massB.r - massA.r);
-            glm::vec3 BtoA = glm::normalize(massA.r - massB.r);
-            float fta = fs + glm::dot(AtoB, massB.v - massA.v) * 0.5;
-            float ftb = fs + glm::dot(BtoA, massA.v - massB.v) * 0.5;
-            massA.f += AtoB * fta;
-            massB.f += BtoA * ftb;
+            float fs = 20000.0f * (glm::length(massB.r - massA.r) - spring.L);
+            glm::vec3 dir = massB.r - massA.r;
+            float fd = 500.0f * glm::dot(dir, massB.v - massA.v);
+            massA.f += (fs + fd) * dir;
+            massB.f -= (fs + fd) * dir;
+        }
+
+
+        float bottom = 1000;
+        float top = -1000;
+        float left = 1000;
+        float right = -1000;
+        float near = -1000;
+        float far = 1000;
+        for (MassPoint& mass : body.masses) {
+            if (mass.r.x < left)
+                left = mass.r.x;
+            if (mass.r.x > right)
+                right = mass.r.x;
+            if (mass.r.y < bottom)
+                bottom = mass.r.y;
+            if (mass.r.y > top)
+                top = mass.r.y;
+            if (mass.r.z > near)
+                near = mass.r.z;
+            if (mass.r.z < far)
+                far = mass.r.z;
+        }
+
+
+        for (int k = 0; k < scene->models[i].geometry->numIndices / 3; k++) {
+
+            MassPoint& v0 = body.masses[scene->models[i].geometry->indices[k * 3]];
+            MassPoint& v1 = body.masses[scene->models[i].geometry->indices[k * 3 + 1]];
+            MassPoint& v2 = body.masses[scene->models[i].geometry->indices[k * 3 + 2]];
+            glm::vec3 e01 = v1.r - v0.r;
+            glm::vec3 e02 = v2.r - v0.r;
+            float area = glm::length(glm::cross(e01, e02));
+            glm::vec3 normal = glm::normalize(glm::cross(e01, e02));
+            float V = abs((right - left) * (top - bottom) * (far - near));
+            float P = 800.0;
+            float f = ((area) * P) / (V + 0.001);
+            v0.f += f * normal;
+            v1.f += f * normal;
+            v2.f += f * normal;
+
         }
 
         for (MassPoint& mass : body.masses) {
             mass.v += (mass.f * dt) / mass.m;
             mass.r += mass.v * dt; // integration
 
+
             /* collision */
-            if (mass.r.y <= -5.0f) {
+            if (mass.r.y < -5.0f) {
                 mass.r.y = -5.0f;
-                mass.v = 0.3f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
+             //   mass.v += 0.1f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
             }
         }
+        i++;
     }
 }
 

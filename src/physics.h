@@ -6,6 +6,7 @@ struct MassPoint {
     glm::vec3 v;
     glm::vec3 f;
     float m;
+    int debug;
 };
 
 struct Spring {
