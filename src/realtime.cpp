@@ -77,16 +77,25 @@ void Realtime::initializeGL() {
     /* setup scene */
     shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
+    shader->set(ShaderType::DYNAMIC_SHADER, ":/shaders/dynamic.vert", ":/shaders/dynamic.frag");
 //    scene->addModel(new SphereMesh(),
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
     // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
-    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
+    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
-                    glm::vec4(0, 1, 0, 1));
+                    glm::vec4(0, 1, 0, 1),
+                    false);
+    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0))),
+                    glm::vec4(0, 0.5, 0, 1),
+                    glm::vec4(0, 1, 0, 1),
+                    glm::vec4(0, 1, 0, 1),
+                    true);
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
+    this->scene->screenWidth = m_width;
+    this->scene->screenHeight = m_height;
     camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
     physics->init(scene);
 }
@@ -101,6 +110,8 @@ void Realtime::resizeGL(int w, int h) {
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
+    this->scene->screenWidth = m_width;
+    this->scene->screenHeight = m_height;
     // update w & h in Scene, construct matrices elsewhere in scene & not in constructor
     camera->setFrustum(w, h);
 }
@@ -172,7 +183,7 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
 void Realtime::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
-    physics->update(deltaTime);
+//    physics->update(deltaTime);
     m_elapsedTimer.restart();
 /*
     // find length to move here

@@ -11,6 +11,7 @@
 enum ShaderType {
     MAIN_SHADER,
     CUBEMAP_SHADER,
+    DYNAMIC_SHADER,
 };
 
 class Shader {
@@ -26,4 +27,5 @@ public:
 private:
     GLuint mainShader;
     GLuint cubemapShader;
+    GLuint dynamicShader;
 };

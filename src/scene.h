@@ -15,6 +15,7 @@ struct Model {
     glm::vec4 ambient;
     glm::vec4 diffuse;
     glm::vec4 specular;
+    bool isEnvMapped;
 };
 
 struct Light {
@@ -25,17 +26,17 @@ struct Light {
 class Scene {
 public:
     void drawScene(Shader* shader, Camera* camera);
-    void addModel(Mesh* mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
+    void addModel(Mesh* mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped);
     void setLight(glm::vec4 color, glm::vec3 dir);
     void setupCubemap();
 
     std::vector<Model> models;
+    int screenWidth;
+    int screenHeight;
 
 private:
     void drawModel(Shader* shader, Camera* camera, Model model);
 
     Light light;
-    int screenWidth;
-    int screenHeight;
     Cubemap* cubemap = new Cubemap();
 };
