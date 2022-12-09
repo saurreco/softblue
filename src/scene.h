@@ -34,9 +34,20 @@ public:
     int screenWidth;
     int screenHeight;
 
+    void drawFboSide(Shader* shader, Camera* camera);
+
 private:
     void drawModel(Shader* shader, Camera* camera, Model model);
 
     Light light;
     Cubemap* cubemap = new Cubemap();
+
+    Camera* topCamera = new Camera(); // private cameras for scene, should not be put in real time!
+    Camera* bottomCamera = new Camera();
+    Camera* leftCamera = new Camera();
+    Camera* rightCamera = new Camera();
+    Camera* frontCamera = new Camera();
+    Camera* backCamera = new Camera();
+
+    void initializeSideCameras(); // UNDONE
 };

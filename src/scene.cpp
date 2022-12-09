@@ -14,16 +14,7 @@ void printViewport()
 
 }
 
-void Scene::drawScene(Shader* shader, Camera* camera) {
-
-//    printViewport();
-    // dynamic env map
-    this->cubemap->bindDynamic();
-    glViewport(0, 0, this->cubemap->cubemapSideLength, this->cubemap->cubemapSideLength);
-    Debug::glErrorCheck();
-
-//    printViewport();
-
+void Scene::drawFboSide(Shader* shader, Camera* camera) {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -35,7 +26,6 @@ void Scene::drawScene(Shader* shader, Camera* camera) {
     }
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glBindVertexArray(0);
-    Debug::glErrorCheck();
 
     // CUBEMAP ---------------------------------------------------------
     glDepthMask(GL_FALSE);
@@ -50,14 +40,20 @@ void Scene::drawScene(Shader* shader, Camera* camera) {
     shader->unbind();
     glDepthMask(GL_TRUE);
     // CUBEMAP ---------------------------------------------------------
-    Debug::glErrorCheck();
+}
+
+void Scene::drawScene(Shader* shader, Camera* camera) {
+    // dynamic env map
+    this->cubemap->bindDynamic();
+    glViewport(0, 0, this->cubemap->cubemapSideLength, this->cubemap->cubemapSideLength);
+
+    // draw each fbo side here
+    this->drawFboSide(shader, camera);
 
     this->cubemap->unbindDynamic();
     glViewport(0, 0, screenWidth, screenHeight);
-//    printViewport();
-    Debug::glErrorCheck();
 
-//    // starting to paint the texture
+    // starting to paint the texture
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDepthMask(GL_FALSE);
@@ -72,6 +68,20 @@ void Scene::drawScene(Shader* shader, Camera* camera) {
     glBindTexture(GL_TEXTURE_2D, 0);
     glDepthMask(GL_TRUE);
     shader->unbind();
+
+//    // CUBEMAP ---------------------------------------------------------
+//    glDepthMask(GL_FALSE);
+//    shader->bind(ShaderType::CUBEMAP_SHADER);
+////    glm::mat4 viewTemp = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,10,0), glm::vec3(1,0,0)); // is it 1,0,0?
+////    glm::mat4 projTemp = glm::perspective(90, 1, 1, 100);
+////    glm::mat4 viewProjTemp = projTemp * viewTemp;
+//    // camera->viewProj
+//    shader->addUniformMat4(ShaderType::CUBEMAP_SHADER, "viewProj", camera->viewProj); /* viewproj matrix */
+//    shader->addUniformInt(ShaderType::CUBEMAP_SHADER, "cubemap_texture", 0);
+//    this->cubemap->drawCubeMap();
+//    shader->unbind();
+//    glDepthMask(GL_TRUE);
+//    // CUBEMAP ---------------------------------------------------------
 }
 
 void Scene::drawModel(Shader* shader, Camera* camera, Model model) {
@@ -135,4 +145,8 @@ void Scene::setupCubemap() {
     Debug::glErrorCheck();
     this->cubemap->fillCubeMap(front, back, top, bottom, left, right);
     Debug::glErrorCheck();
+}
+
+void Scene::initializeSideCameras() {
+    //
 }

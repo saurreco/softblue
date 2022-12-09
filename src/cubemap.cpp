@@ -160,16 +160,6 @@ void Cubemap::unbindDynamic() {
     glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->defaultFbo);
 }
 
-//void Cubemap::bindVaoDynamic() {
-//    // currently ONLY DEALING WITH TOP
-//    glBindVertexArray(this->cubemapTop_vao);
-//}
-
-//void Cubemap::unbindVaoDynamic() {
-//    // currently ONLY DEALING WITH TOP
-//    glBindVertexArray(0);
-//}
-
 void Cubemap::initCubeSide() {
     // trying out normal
     float points[] = {

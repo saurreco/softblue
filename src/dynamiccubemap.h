@@ -6,6 +6,10 @@
 
 class DynamicCubemap {
 public:
+    GLuint fbo_cube;
+    GLuint fbo_rb_cube;
+    GLuint fbo_tex_cube;
+
     GLuint fbo_top;
     GLuint fbo_rb_top;
     GLuint fbo_tex_top;
