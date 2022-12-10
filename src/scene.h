@@ -34,7 +34,9 @@ public:
     int screenWidth;
     int screenHeight;
 
+    // dynamic env mapping
     void drawFboSide(Shader* shader, Camera* camera);
+    void initializeSideCameras();
 
 private:
     void drawModel(Shader* shader, Camera* camera, Model model);
@@ -48,6 +50,4 @@ private:
     Camera* rightCamera = new Camera();
     Camera* frontCamera = new Camera();
     Camera* backCamera = new Camera();
-
-    void initializeSideCameras(); // UNDONE
 };

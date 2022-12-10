@@ -130,7 +130,7 @@ void Cubemap::initCubeMap() {
     glBindVertexArray(0);
 
     // initialize also the side
-    this->initCubeSide();
+//    this->initCubeSide();
 }
 
 void Cubemap::drawCubeMap() {
@@ -152,7 +152,7 @@ void Cubemap::initDynamicCubemap() {
 
 void Cubemap::bindDynamic() {
     // currently ONLY DEALING WITH TOP
-    glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->fbo_top);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->fbo_cube);
 }
 
 void Cubemap::unbindDynamic() {
@@ -196,5 +196,5 @@ void Cubemap::initCubeSide() {
 }
 
 void Cubemap::bindCubesideTex() {
-    glBindTexture(GL_TEXTURE_2D, this->dynamicCubemap->fbo_tex_top);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, this->dynamicCubemap->fbo_tex_cube);
 }

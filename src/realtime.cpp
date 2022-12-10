@@ -96,7 +96,8 @@ void Realtime::initializeGL() {
     scene->setupCubemap();
     this->scene->screenWidth = m_width;
     this->scene->screenHeight = m_height;
-    camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0));
+    scene->initializeSideCameras();
+    camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0), 45.f);
     physics->init(scene);
 }
 
@@ -113,7 +114,7 @@ void Realtime::resizeGL(int w, int h) {
     this->scene->screenWidth = m_width;
     this->scene->screenHeight = m_height;
     // update w & h in Scene, construct matrices elsewhere in scene & not in constructor
-    camera->setFrustum(w, h);
+    camera->setFrustum(w, h, 45.f);
 }
 
 // ================== Project 6: Action!

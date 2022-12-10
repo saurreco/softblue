@@ -37,8 +37,9 @@ public:
     void initCubeSide(); // currently: TOP
 
     int cubemapSideLength; // it's a cube => width = height
-private:
+
     DynamicCubemap* dynamicCubemap = new DynamicCubemap();
+private:
     void initDynamicCubemap(); // called in fillCubeMap();
 };
 
