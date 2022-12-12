@@ -1,26 +1,26 @@
 #include "physics.h"
+#include "raycast.h"
 #include <tuple>
 #include <map>
 
 void Physics::init(Scene* scene) {
     bodies.clear();
+    massOfPoint = 1.0f;
 
     for (Model model : scene->models) {
-        Body body;
+        if (!model.type) {
+            obstacles.push_back(model);
+            continue;
+        }
 
+        Body body;
 
         /* mass point */
         for (int i = 0; i < model.geometry->numVertices; i++) {
             MassPoint mass;
-            mass.m = 1.0f;
             mass.v = glm::vec3(0, 0, 0);
             mass.f = glm::vec3(0, 0, 0);
             mass.r = model.geometry->getVertex(i);
-            if (mass.r.y > 5) {
-                mass.debug = 1;
-            } else {
-                mass.debug = 0;
-            }
             body.masses.push_back(mass);
         }
 
@@ -65,7 +65,7 @@ void Physics::applyPhysics(float dt) {
 
         for (MassPoint& mass : body.masses) {
             mass.f = glm::vec3(0, 0, 0);
-            mass.f += glm::vec3(0, -9.8f, 0) * mass.m;
+            mass.f += glm::vec3(0, -9.8f, 0) * massOfPoint;
         }
 
         for (Spring& spring : body.springs) {
@@ -120,14 +120,21 @@ void Physics::applyPhysics(float dt) {
         }
 
         for (MassPoint& mass : body.masses) {
-            mass.v += (mass.f * dt) / mass.m;
+            mass.v += (mass.f * dt) / massOfPoint;
             mass.r += mass.v * dt; // integration
 
 
             /* collision */
-            if (mass.r.y < -5.0f) {
-                mass.r.y = -5.0f;
-                mass.v = 0.8f * glm::reflect(mass.v, glm::vec3(0, 1, 0));
+            for (Model model : obstacles) {
+                glm::mat4 modelMatrix = model.geometry->modelMatrix;
+                glm::mat4 inverseModelMatrix =  model.geometry->inverseModelMatrix;
+                glm::mat4 normalMatrix = model.geometry->normalMatrix;
+                glm::vec3 objectR = glm::vec3(inverseModelMatrix * glm::vec4(mass.r, 1));
+                IntersectData hit = Raycast::cubeCollide(objectR);
+                if (hit.collide) {
+                    mass.r = modelMatrix * glm::vec4(hit.pos, 1);
+                    mass.v = glm::reflect(mass.v, glm::vec3(normalMatrix * glm::vec4(hit.normal, 0)));
+                }
             }
         }
         i++;

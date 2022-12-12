@@ -49,6 +49,7 @@ add_executable(${PROJECT_NAME}
     src/physics.cpp
     src/dynamiccubemap.cpp
     src/tetmesh.cpp
+    src/raycast.cpp
 
     src/scene.h
     src/mesh.h
@@ -61,6 +62,7 @@ add_executable(${PROJECT_NAME}
     src/physics.h
     src/dynamiccubemap.h
     src/tetmesh.h
+    src/raycast.h
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`

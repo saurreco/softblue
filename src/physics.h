@@ -5,8 +5,6 @@ struct MassPoint {
     glm::vec3 r;
     glm::vec3 v;
     glm::vec3 f;
-    float m;
-    int debug;
 };
 
 struct Spring {
@@ -25,8 +23,10 @@ public:
     void update(float dt);
     Scene* scene;
     std::vector<Body> bodies;
+    std::vector<Model> obstacles;
     float stiffness;
     float damping;
+    float massOfPoint;
 private:
     void applyPhysics(float dt);
     void updateScene();

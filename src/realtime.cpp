@@ -81,30 +81,47 @@ void Realtime::initializeGL()
     /* setup scene */
     shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
-    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
-                    glm::vec4(0, 0.5, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    false);
-    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0))),
-                    glm::vec4(0, 0.5, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    true);
+    // scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
+    //                 glm::vec4(0, 0.5, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 false);
+    // scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0))),
+    //                 glm::vec4(0, 0.5, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 true);
     //    scene->addModel(new SphereMesh(),
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
     // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
-    scene->addModel(new SphereMesh(glm::translate(glm::scale(glm::mat4(1), glm::vec3(1, 1, 1)), glm::vec3(0, 5, 0))),
+    scene->addModel(new SphereMesh(glm::translate(glm::scale(glm::mat4(1), glm::vec3(0.4, 0.4, 0.4)), glm::vec3(-3, 12, 0))),
                     glm::vec4(0.5, 0.5, 0.5, 1),
-                    glm::vec4(1, 1, 1, 1),` glm::vec4(1, 1, 1, 1));
+                    glm::vec4(1, 1, 1, 1), glm::vec4(1, 1, 1, 1), true, 1);
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.5, 0, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.5, -5, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0);
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
     this->scene->screenWidth = m_width;
     this->scene->screenHeight = m_height;
     scene->initializeSideCameras();
     camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0), 45.f);
-    physics->init(scene);
+
+    // scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
+    // scene->setupCubemap();
+    // camera->init(m_width, m_height, glm::vec3(0, 5, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    // physics->init(scene);
 }
 
 void Realtime::paintGL()
@@ -209,6 +226,8 @@ void Realtime::timerEvent(QTimerEvent *event)
 {
     int elapsedms = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
+    tmp(0.001);
+    tmp(0.001);
     tmp(0.001);
     tmp(0.001);
     tmp(0.001);

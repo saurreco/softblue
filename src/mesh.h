@@ -20,6 +20,9 @@ public:
     GLuint ebo;
     int numVertices = 0;
     int numIndices = 0;
+    glm::mat4 modelMatrix;
+    glm::mat4 normalMatrix;
+    glm::mat4 inverseModelMatrix;
 
     std::vector<float> vertices;
     std::vector<int> indices;

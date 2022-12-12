@@ -10,23 +10,27 @@
 #include "camera.h"
 #include "cubemap.h"
 
-struct Model {
-    Mesh* geometry;
+struct Model
+{
+    Mesh *geometry;
     glm::vec4 ambient;
     glm::vec4 diffuse;
     glm::vec4 specular;
     bool isEnvMapped;
+    int type;
 };
 
-struct Light {
+struct Light
+{
     glm::vec4 color;
     glm::vec3 dir;
 };
 
-class Scene {
+class Scene
+{
 public:
-    void drawScene(Shader* shader, Camera* camera);
-    void addModel(Mesh* mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped);
+    void drawScene(Shader *shader, Camera *camera);
+    void addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type);
     void setLight(glm::vec4 color, glm::vec3 dir);
     void setupCubemap();
 
@@ -35,19 +39,19 @@ public:
     int screenHeight;
 
     // dynamic env mapping
-    void drawFboSide(Shader* shader, Camera* camera);
+    void drawFboSide(Shader *shader, Camera *camera);
     void initializeSideCameras();
 
 private:
-    void drawModel(Shader* shader, Camera* camera, Model model);
+    void drawModel(Shader *shader, Camera *camera, Model model);
 
     Light light;
-    Cubemap* cubemap = new Cubemap();
+    Cubemap *cubemap = new Cubemap();
 
-    Camera* topCamera = new Camera(); // private cameras for scene, should not be put in real time!
-    Camera* bottomCamera = new Camera();
-    Camera* leftCamera = new Camera();
-    Camera* rightCamera = new Camera();
-    Camera* frontCamera = new Camera();
-    Camera* backCamera = new Camera();
+    Camera *topCamera = new Camera(); // private cameras for scene, should not be put in real time!
+    Camera *bottomCamera = new Camera();
+    Camera *leftCamera = new Camera();
+    Camera *rightCamera = new Camera();
+    Camera *frontCamera = new Camera();
+    Camera *backCamera = new Camera();
 };
