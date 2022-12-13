@@ -6,6 +6,7 @@
 #include <QImage>
 #include <iostream>
 #include "shader.h"
+#include "dynamiccubemap.h"
 
 class Cubemap {
 public:
@@ -23,6 +24,19 @@ public:
     GLuint cubemap_texture;
     GLuint cubemapVbo;
     GLuint cubemapVao;
+    GLuint cubemapTop_vbo;
+    GLuint cubemapTop_vao;
+
+    void bindDynamic();
+    void unbindDynamic();
+
+    void bindCubesideTex();
+
+    int cubemapSideLength; // it's a cube => width = height
+
+    DynamicCubemap* dynamicCubemap = new DynamicCubemap();
+private:
+    void initDynamicCubemap(); // called in fillCubeMap();
 };
 
 #endif // CUBEMAP_H

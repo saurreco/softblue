@@ -13,7 +13,6 @@ void Cubemap::fillCubeMap(
     const char* right) {
     // generate a cube-map texture to hold all the sides
     glGenTextures(1, &this->cubemap_texture);
-    Debug::glErrorCheck();
 
     // binding
     glActiveTexture(GL_TEXTURE0);
@@ -35,6 +34,9 @@ void Cubemap::fillCubeMap(
 
     // unbinding
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+    // init dynamic cubemap
+    this->initDynamicCubemap();
 }
 
 bool Cubemap::loadCubeMapSide(GLuint texture, GLenum side_target, const char* file_name) {
@@ -51,6 +53,8 @@ bool Cubemap::loadCubeMapSide(GLuint texture, GLenum side_target, const char* fi
         std::cerr << "WARNING: image " << file_name << " is not power-of-2 dimensions " << std::endl;
     }
 
+    this->cubemapSideLength = x;
+
     // copy image data into 'target' side of cube map
     glTexImage2D(
         side_target,
@@ -62,7 +66,6 @@ bool Cubemap::loadCubeMapSide(GLuint texture, GLenum side_target, const char* fi
         GL_RGBA,
         GL_UNSIGNED_BYTE,
         image_data);
-    Debug::glErrorCheck();
     free(image_data);
     return true;
 }
@@ -110,48 +113,6 @@ void Cubemap::initCubeMap() {
        10.0f, -10.0f, -10.0f,
       -10.0f, -10.0f,  10.0f,
        10.0f, -10.0f,  10.0f
-
-//        -1.0f,  1.0f, -1.0f,
-//        -1.0f, -1.0f, -1.0f,
-//         1.0f, -1.0f, -1.0f,
-//         1.0f, -1.0f, -1.0f,
-//         1.0f,  1.0f, -1.0f,
-//        -1.0f,  1.0f, -1.0f,
-
-//        -1.0f, -1.0f,  1.0f,
-//        -1.0f, -1.0f, -1.0f,
-//        -1.0f,  1.0f, -1.0f,
-//        -1.0f,  1.0f, -1.0f,
-//        -1.0f,  1.0f,  1.0f,
-//        -1.0f, -1.0f,  1.0f,
-
-//         1.0f, -1.0f, -1.0f,
-//         1.0f, -1.0f,  1.0f,
-//         1.0f,  1.0f,  1.0f,
-//         1.0f,  1.0f,  1.0f,
-//         1.0f,  1.0f, -1.0f,
-//         1.0f, -1.0f, -1.0f,
-
-//        -1.0f, -1.0f,  1.0f,
-//        -1.0f,  1.0f,  1.0f,
-//         1.0f,  1.0f,  1.0f,
-//         1.0f,  1.0f,  1.0f,
-//         1.0f, -1.0f,  1.0f,
-//        -1.0f, -1.0f,  1.0f,
-
-//        -1.0f,  1.0f, -1.0f,
-//         1.0f,  1.0f, -1.0f,
-//         1.0f,  1.0f,  1.0f,
-//         1.0f,  1.0f,  1.0f,
-//        -1.0f,  1.0f,  1.0f,
-//        -1.0f,  1.0f, -1.0f,
-
-//        -1.0f, -1.0f, -1.0f,
-//        -1.0f, -1.0f,  1.0f,
-//         1.0f, -1.0f, -1.0f,
-//         1.0f, -1.0f, -1.0f,
-//        -1.0f, -1.0f,  1.0f,
-//         1.0f, -1.0f,  1.0f
     };
     glGenBuffers(1, &cubemapVbo);
     glGenVertexArrays(1, &cubemapVao);
@@ -160,7 +121,6 @@ void Cubemap::initCubeMap() {
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL); // why is it this way?
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), reinterpret_cast<void *>(0));
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -174,4 +134,21 @@ void Cubemap::drawCubeMap() {
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glBindVertexArray(0);
+}
+
+void Cubemap::initDynamicCubemap() {
+    this->dynamicCubemap->textureSideLength = cubemapSideLength;
+    this->dynamicCubemap->genFbos();
+}
+
+void Cubemap::bindDynamic() {
+    glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->fbo_cube);
+}
+
+void Cubemap::unbindDynamic() {
+    glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->defaultFbo);
+}
+
+void Cubemap::bindCubesideTex() {
+    glBindTexture(GL_TEXTURE_CUBE_MAP, this->dynamicCubemap->fbo_tex_cube);
 }

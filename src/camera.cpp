@@ -1,14 +1,14 @@
 #include "camera.h"
 
-void Camera::init(int w, int h, glm::vec3 pos, glm::vec3 look, glm::vec3 up) {
-    setFrustum(w, h);
+void Camera::init(int w, int h, glm::vec3 pos, glm::vec3 look, glm::vec3 up, float fov) {
+    setFrustum(w, h, fov);
     setView(pos, look, up);
 }
 
-void Camera::setFrustum(int w, int h) {
+void Camera::setFrustum(int w, int h, float fov) {
     this->screenWidth = w;
     this->screenHeight = h;
-    this->proj = glm::perspective(45.0f, (w / (float)h), 1.0f, 100.0f);
+    this->proj = glm::perspective(glm::radians(fov), (w / (float)h), 1.f, 100.0f);
     this->viewProj = proj * view;
 }
 
