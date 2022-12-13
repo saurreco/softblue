@@ -13,7 +13,6 @@ void Cubemap::fillCubeMap(
     const char* right) {
     // generate a cube-map texture to hold all the sides
     glGenTextures(1, &this->cubemap_texture);
-    Debug::glErrorCheck();
 
     // binding
     glActiveTexture(GL_TEXTURE0);
@@ -67,7 +66,6 @@ bool Cubemap::loadCubeMapSide(GLuint texture, GLenum side_target, const char* fi
         GL_RGBA,
         GL_UNSIGNED_BYTE,
         image_data);
-    Debug::glErrorCheck();
     free(image_data);
     return true;
 }
@@ -123,14 +121,10 @@ void Cubemap::initCubeMap() {
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL); // why is it this way?
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), reinterpret_cast<void *>(0));
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    // initialize also the side
-//    this->initCubeSide();
 }
 
 void Cubemap::drawCubeMap() {
@@ -143,56 +137,16 @@ void Cubemap::drawCubeMap() {
 }
 
 void Cubemap::initDynamicCubemap() {
-    Debug::glErrorCheck();
     this->dynamicCubemap->textureSideLength = cubemapSideLength;
-    this->dynamicCubemap->cubemap_texture = this->cubemap_texture;
     this->dynamicCubemap->genFbos();
-    Debug::glErrorCheck();
 }
 
 void Cubemap::bindDynamic() {
-    // currently ONLY DEALING WITH TOP
     glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->fbo_cube);
 }
 
 void Cubemap::unbindDynamic() {
-    // currently ONLY DEALING WITH TOP
     glBindFramebuffer(GL_FRAMEBUFFER, this->dynamicCubemap->defaultFbo);
-}
-
-void Cubemap::initCubeSide() {
-    // trying out normal
-    float points[] = {
-      -10.0f,  10.0f, -10.0f,
-       0.f, 0.f,
-       10.0f,  10.0f, -10.0f,
-       1.f, 0.f,
-       10.0f,  10.0f,  10.0f,
-       1.f, 1.f,
-       10.0f,  10.0f,  10.0f,
-       1.f, 1.f,
-      -10.0f,  10.0f,  10.0f,
-       0.f, 1.f,
-      -10.0f,  10.0f, -10.0f,
-       0.f, 0.f
-    };
-
-    glGenBuffers(1, &cubemapTop_vbo);
-    glGenVertexArrays(1, &cubemapTop_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, cubemapTop_vbo);
-    glBindVertexArray(cubemapTop_vao);
-    Debug::glErrorCheck();
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), reinterpret_cast<void *>(0));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), reinterpret_cast<void *>(3 * sizeof(GLfloat)));
-    Debug::glErrorCheck();
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-    Debug::glErrorCheck();
 }
 
 void Cubemap::bindCubesideTex() {

@@ -77,11 +77,6 @@ void Realtime::initializeGL() {
     /* setup scene */
     shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
-    shader->set(ShaderType::DYNAMIC_SHADER, ":/shaders/dynamic.vert", ":/shaders/dynamic.frag");
-//    scene->addModel(new SphereMesh(),
-    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
-    // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
-    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
     scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
                     glm::vec4(0, 0.5, 0, 1),
                     glm::vec4(0, 1, 0, 1),
@@ -162,7 +157,6 @@ void Realtime::mouseReleaseEvent(QMouseEvent *event) {
 
 void Realtime::mouseMoveEvent(QMouseEvent *event) {
     if (m_mouseDown) {
-//        /*
         int posX = event->position().x();
         int posY = event->position().y();
         int deltaX = posX - m_prev_mouse_pos.x;
@@ -176,7 +170,6 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
         glm::mat4 rotationY = glm::rotate(thetaY, this->camera->right);
         glm::mat3 combinedRotation = rotationX * rotationY;
         this->camera->updateUpnLook(combinedRotation);
-//            */
         update(); // asks for a PaintGL() call to occur
     }
 }

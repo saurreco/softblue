@@ -29,12 +29,8 @@ public:
 
     void bindDynamic();
     void unbindDynamic();
-//    void bindVaoDynamic();
-//    void unbindVaoDynamic();
 
-    void bindCubesideTex(); // currently: TOP
-
-    void initCubeSide(); // currently: TOP
+    void bindCubesideTex();
 
     int cubemapSideLength; // it's a cube => width = height
 

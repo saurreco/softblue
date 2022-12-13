@@ -43,7 +43,6 @@ void Scene::drawScene(Shader* shader, Camera* camera) {
     glViewport(0, 0, this->cubemap->cubemapSideLength, this->cubemap->cubemapSideLength);
 
     // draw each fbo side here
-//    this->drawFboSide(shader, camera);
     for (int i = 0; i < 6; i++) {
         switch (i) {
         case 0:
