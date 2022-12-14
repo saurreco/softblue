@@ -128,7 +128,7 @@ void Realtime::initializeGL()
 
     // scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     // scene->setupCubemap();
-    camera->init(m_width, m_height, glm::vec3(0, 5, 10), glm::vec3(0, 0, 0) - glm::vec3(0, 5, 10), glm::vec3(0, 1, 0), 45.f);
+    camera->init(m_width, m_height, glm::vec3(0, 5, 10), glm::vec3(0, 0, 0) - glm::vec3(0, 5, 10), glm::vec3(0, 1, 0), 45.f, 1.f);
     physics->init(scene);
 }
 
@@ -147,7 +147,7 @@ void Realtime::resizeGL(int w, int h)
     this->scene->screenWidth = m_width;
     this->scene->screenHeight = m_height;
     // update w & h in Scene, construct matrices elsewhere in scene & not in constructor
-    camera->setFrustum(w, h, 45.f);
+    camera->setFrustum(w, h, 45.f, 1.f);
 }
 
 // ================== Project 6: Action!

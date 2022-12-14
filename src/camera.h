@@ -14,8 +14,8 @@ public:
         proj = glm::mat4(1);
         viewProj = glm::mat4(1);
     }
-    void init(int w, int h, glm::vec3 pos, glm::vec3 look, glm::vec3 up, float fov);
-    void setFrustum(int w, int h, float fov);
+    void init(int w, int h, glm::vec3 pos, glm::vec3 look, glm::vec3 up, float fov, float nearPlane);
+    void setFrustum(int w, int h, float fov, float nearPlane);
     void setView(glm::vec3 pos, glm::vec3 look, glm::vec3 up);
     void updateCameraPos(glm::vec3 direction);
     glm::vec3 getTranslation(Qt::Key keyDown);

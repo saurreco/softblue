@@ -250,17 +250,17 @@ void Scene::initializeSideCameras()
 //    this->frontCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f); // -1, 90
 //    // init back camera:
 //    this->backCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f);
-    this->topCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f);
+    this->topCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f, 0.1f);
     // init bottom camera:
-    this->bottomCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f);
+    this->bottomCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f, 0.1f);
     // init left camera:
-    this->leftCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f);
+    this->leftCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f, 0.1f);
     // init right camera:
-    this->rightCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f);
+    this->rightCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f, 0.1f);
     // init front camera:
-    this->frontCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f); // -1, 90
+    this->frontCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f, 0.1f); // -1, 90
     // init back camera:
-    this->backCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f);
+    this->backCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f, 0.1f);
     // glm::vec3(-3, 3, 0)
 }
 

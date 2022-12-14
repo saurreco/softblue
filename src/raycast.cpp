@@ -36,10 +36,10 @@ struct IntersectData Raycast::cubeCollide(glm::vec3 point) {
 
     return IntersectData{hits % 2, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0)};
     */
-    float e = 0.0f;
-    int collide = point.x + e <= 0.5 && point.x - e >= -0.5 &&
-                  point.y + e <= 0.5 && point.y - e >= -0.5 &&
-                  point.z + e <= 0.5 && point.z - e >= -0.5;
+    float e = 0.f;
+    int collide = point.x <= 0.5 + e && point.x >= -0.5 - e &&
+                  point.y <= 0.5 + e && point.y >= -0.5 -e &&
+                  point.z <= 0.5 + e && point.z >= -0.5 - e;
     if (collide) {
         std::vector<IntersectData> tmp;
         glm::vec3 top(point.x, 0.5 + e, point.z);
