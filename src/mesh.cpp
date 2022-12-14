@@ -36,7 +36,10 @@ void Mesh::setNormal(int i, glm::vec3 normal) {
 }
 
 void Mesh::buildGeometry(glm::mat4 model) {
-    glm::mat4 normalMatrix = glm::mat4(glm::inverse(glm::transpose(glm::mat3(model))));
+    modelMatrix = model;
+    normalMatrix = glm::mat4(glm::inverse(glm::transpose(glm::mat3(model))));
+    inverseModelMatrix = glm::inverse(model);
+
     for (int i = 0; i < numVertices; i++) {
         setVertex(i, glm::vec3(model * glm::vec4(getVertex(i), 1)));
         setNormal(i, glm::vec3(normalMatrix * glm::vec4(getNormal(i), 0)));

@@ -13,6 +13,7 @@
 #include "debug.h"
 #include "cubemesh.h"
 #include "physics.h"
+#include "tetmesh.h"
 
 // ================== Project 5: Lights, Camera
 
@@ -21,31 +22,33 @@
 Realtime::Realtime(QWidget *parent)
     : QOpenGLWidget(parent)
 {
-    m_prev_mouse_pos = glm::vec2(size().width()/2, size().height()/2);
+    m_prev_mouse_pos = glm::vec2(size().width() / 2, size().height() / 2);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    m_keyMap[Qt::Key_W]       = false;
-    m_keyMap[Qt::Key_A]       = false;
-    m_keyMap[Qt::Key_S]       = false;
-    m_keyMap[Qt::Key_D]       = false;
+    m_keyMap[Qt::Key_W] = false;
+    m_keyMap[Qt::Key_A] = false;
+    m_keyMap[Qt::Key_S] = false;
+    m_keyMap[Qt::Key_D] = false;
     m_keyMap[Qt::Key_Control] = false;
-    m_keyMap[Qt::Key_Space]   = false;
+    m_keyMap[Qt::Key_Space] = false;
 
     // If you must use this function, do not edit anything above this
 }
 
-void Realtime::finish() {
+void Realtime::finish()
+{
     killTimer(m_timer);
     this->makeCurrent();
 
     // Students: anything requiring OpenGL calls when the program exits should be done here
 
     this->doneCurrent();
-    delete(this->scene);
+    delete (this->scene);
 }
 
-void Realtime::initializeGL() {
+void Realtime::initializeGL()
+{
     m_devicePixelRatio = this->devicePixelRatio();
     m_width = size().width() * m_devicePixelRatio;
     m_height = size().height() * m_devicePixelRatio;
@@ -54,14 +57,15 @@ void Realtime::initializeGL() {
     this->shader = new Shader();
     this->physics = new Physics();
 
-    m_timer = startTimer(1000/60);
+    m_timer = startTimer(1000 / 60);
     m_elapsedTimer.start();
 
     // Initializing GL.
     // GLEW (GL Extension Wrangler) provides access to OpenGL functions.
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
-    if (err != GLEW_OK) {
+    if (err != GLEW_OK)
+    {
         std::cerr << "Error while initializing GL: " << glewGetErrorString(err) << std::endl;
     }
     std::cout << "Initialized GL: Version " << glewGetString(GLEW_VERSION) << std::endl;
@@ -77,31 +81,65 @@ void Realtime::initializeGL() {
     /* setup scene */
     shader->set(ShaderType::MAIN_SHADER, ":/shaders/default.vert", ":/shaders/default.frag");
     shader->set(ShaderType::CUBEMAP_SHADER, ":/shaders/cubemap.vert", ":/shaders/cubemap.frag");
-    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
-                    glm::vec4(0, 0.5, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    false);
-    scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0))),
-                    glm::vec4(0, 0.5, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    glm::vec4(0, 1, 0, 1),
-                    true);
+    // scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
+    //                 glm::vec4(0, 0.5, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 false);
+    // scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0))),
+    //                 glm::vec4(0, 0.5, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 glm::vec4(0, 1, 0, 1),
+    //                 true);
+    //    scene->addModel(new SphereMesh(),
+    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
+    // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
+    scene->addModel(new SphereMesh(glm::translate(glm::scale(glm::mat4(1), glm::vec3(1.f)), glm::vec3(-3, 12, 0))), // x = -3 y = 12
+                    // glm::vec3(0.4, 0.4, 0.4)
+                    glm::vec4(0.f, 0.5, 0.f, 1),
+                    glm::vec4(1, 1, 1, 1), glm::vec4(1, 1, 1, 1), true, 1);
+    scene->updateReflectiveObjectPosition(glm::vec3(-3, 12, 0));
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.5, 0, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.5, -5, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0);
+//     scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
+//                     glm::vec4(0, 0.5, 0, 1),
+//                     glm::vec4(0, 1, 0, 1),
+//                     glm::vec4(0, 1, 0, 1),
+//                     false,
+//                     0);
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
     this->scene->screenWidth = m_width;
     this->scene->screenHeight = m_height;
     scene->initializeSideCameras();
-    camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0), 45.f);
+//    camera->init(m_width, m_height, glm::vec3(0, 0, 10), glm::vec3(0, 0, -3), glm::vec3(0, 1, 0), 45.f);
+
+    // scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
+    // scene->setupCubemap();
+    camera->init(m_width, m_height, glm::vec3(0, 5, 10), glm::vec3(0, 0, 0) - glm::vec3(0, 5, 10), glm::vec3(0, 1, 0), 45.f);
     physics->init(scene);
 }
 
-void Realtime::paintGL() {
+void Realtime::paintGL()
+{
     // paint here
     this->scene->drawScene(shader, camera);
 }
 
-void Realtime::resizeGL(int w, int h) {
+void Realtime::resizeGL(int w, int h)
+{
     // Tells OpenGL how big the screen is
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     m_width = size().width() * m_devicePixelRatio;
@@ -114,7 +152,8 @@ void Realtime::resizeGL(int w, int h) {
 
 // ================== Project 6: Action!
 
-void Realtime::keyPressEvent(QKeyEvent *event) {
+void Realtime::keyPressEvent(QKeyEvent *event)
+{
     Qt::Key keyPressed = Qt::Key(event->key());
     // if invalid key then ignore
     if (keyPressed != Qt::Key::Key_W &&
@@ -122,13 +161,15 @@ void Realtime::keyPressEvent(QKeyEvent *event) {
         keyPressed != Qt::Key::Key_S &&
         keyPressed != Qt::Key::Key_D &&
         keyPressed != Qt::Key::Key_Space &&
-        keyPressed != Qt::Key::Key_Control) {
+        keyPressed != Qt::Key::Key_Control)
+    {
         return;
     }
     m_keyMap[keyPressed] = true;
 }
 
-void Realtime::keyReleaseEvent(QKeyEvent *event) {
+void Realtime::keyReleaseEvent(QKeyEvent *event)
+{
     Qt::Key keyPressed = Qt::Key(event->key());
     // if invalid key then ignore
     if (keyPressed != Qt::Key::Key_W &&
@@ -136,27 +177,34 @@ void Realtime::keyReleaseEvent(QKeyEvent *event) {
         keyPressed != Qt::Key::Key_S &&
         keyPressed != Qt::Key::Key_D &&
         keyPressed != Qt::Key::Key_Space &&
-        keyPressed != Qt::Key::Key_Control) {
+        keyPressed != Qt::Key::Key_Control)
+    {
         return;
     }
     m_keyMap[keyPressed] = false;
 }
 
-void Realtime::mousePressEvent(QMouseEvent *event) {
-    if (event->buttons().testFlag(Qt::LeftButton)) {
+void Realtime::mousePressEvent(QMouseEvent *event)
+{
+    if (event->buttons().testFlag(Qt::LeftButton))
+    {
         m_mouseDown = true;
         m_prev_mouse_pos = glm::vec2(event->position().x(), event->position().y());
     }
 }
 
-void Realtime::mouseReleaseEvent(QMouseEvent *event) {
-    if (!event->buttons().testFlag(Qt::LeftButton)) {
+void Realtime::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (!event->buttons().testFlag(Qt::LeftButton))
+    {
         m_mouseDown = false;
     }
 }
 
-void Realtime::mouseMoveEvent(QMouseEvent *event) {
-    if (m_mouseDown) {
+void Realtime::mouseMoveEvent(QMouseEvent *event)
+{
+    if (m_mouseDown)
+    {
         int posX = event->position().x();
         int posY = event->position().y();
         int deltaX = posX - m_prev_mouse_pos.x;
@@ -165,7 +213,7 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
 
         // Use deltaX and deltaY here to rotate
         float thetaX = -(float)deltaX / 1000.f * M_PI / 4;
-        glm::mat4 rotationX = glm::rotate(thetaX, glm::vec3(0.f,1.f,0.f));
+        glm::mat4 rotationX = glm::rotate(thetaX, glm::vec3(0.f, 1.f, 0.f));
         float thetaY = -(float)deltaY / 1000.f * M_PI / 4;
         glm::mat4 rotationY = glm::rotate(thetaY, this->camera->right);
         glm::mat3 combinedRotation = rotationX * rotationY;
@@ -174,36 +222,63 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
-void Realtime::timerEvent(QTimerEvent *event) {
-    int elapsedms   = m_elapsedTimer.elapsed();
+void Realtime::tmp(float dt)
+{
+    physics->update(dt / 4.0f);
+    physics->update(dt / 4.0f);
+    physics->update(dt / 4.0f);
+    physics->update(dt / 4.0f);
+}
+
+void Realtime::timerEvent(QTimerEvent *event)
+{
+    int elapsedms = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
-//    physics->update(deltaTime);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    tmp(0.001);
+    this->scene->updateReflectiveObjectPosition(this->physics->objectCenter);
+//    std::cout << glm::to_string(physics->objectCenter) << std::endl;
+    // reinitialize side cams
+    this->scene->initializeSideCameras();
+
+    // a    physics->update(deltaTime);
+
     m_elapsedTimer.restart();
-/*
-    // find length to move here
-    // if delta time is 0.2 then we move 1 unit! (1/5 of the standard number of units per second)
-    float noOfMovingWorldUnit = deltaTime * 5; // deltaTime is counted in seconds
-    // find which key is down
-    glm::vec3 returnedMovement = this->findKeyMovement();
-    if (returnedMovement == glm::vec3(0.f)) {
-        return; // no movement at all
-    }
-    // then get the normalized direction
-    glm::vec3 normalizedReturnedMovement = glm::normalize(returnedMovement);
-    // then move in the length we specified earlier
-    // change camera's pos
-    this->camera->updateCameraPos(noOfMovingWorldUnit * normalizedReturnedMovement);
-    // update view matrix
-//*/
+    /*
+        // find length to move here
+        // if delta time is 0.2 then we move 1 unit! (1/5 of the standard number of units per second)
+        float noOfMovingWorldUnit = deltaTime * 5; // deltaTime is counted in seconds
+        // find which key is down
+        glm::vec3 returnedMovement = this->findKeyMovement();
+        if (returnedMovement == glm::vec3(0.f)) {
+            return; // no movement at all
+        }
+        // then get the normalized direction
+        glm::vec3 normalizedReturnedMovement = glm::normalize(returnedMovement);
+        // then move in the length we specified earlier
+        // change camera's pos
+        this->camera->updateCameraPos(noOfMovingWorldUnit * normalizedReturnedMovement);
+        // update view matrix
+    //*/
     update(); // asks for a PaintGL() call to occur
 }
 
 // MOVEMENT HELPERS ----------------------------------------------
-glm::vec3 Realtime::findKeyMovement() {
+glm::vec3 Realtime::findKeyMovement()
+{
     glm::vec3 totalDirection(0.f);
-    for (auto it = this->m_keyMap.begin(); it != this->m_keyMap.end(); ++it) {
-        if (it->second) { // if it's true => key is down
-             totalDirection += this->camera->getTranslation(it->first);
+    for (auto it = this->m_keyMap.begin(); it != this->m_keyMap.end(); ++it)
+    {
+        if (it->second)
+        { // if it's true => key is down
+            totalDirection += this->camera->getTranslation(it->first);
         }
     }
     return totalDirection;

@@ -41,6 +41,7 @@ private:
     void timerEvent(QTimerEvent *event) override;
     // movement helpers
     glm::vec3 findKeyMovement();
+    void tmp(float dt);
 
     // Tick Related Variables
     int m_timer;                                        // Stores timer which attempts to run ~60 times per second

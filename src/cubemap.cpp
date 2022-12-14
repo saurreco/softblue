@@ -114,6 +114,9 @@ void Cubemap::initCubeMap() {
       -10.0f, -10.0f,  10.0f,
        10.0f, -10.0f,  10.0f
     };
+    for (float& i : points) {
+        i *= 5;
+    }
     glGenBuffers(1, &cubemapVbo);
     glGenVertexArrays(1, &cubemapVao);
     glBindBuffer(GL_ARRAY_BUFFER, cubemapVbo);
