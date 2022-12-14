@@ -24,7 +24,9 @@ void Physics::init(Scene* scene) {
             body.masses.push_back(mass);
         }
 
-        calcCenter(body);
+        body.center = model.center;
+        body.k = model.k;
+        body.p = model.p;
 
         /* spring */
         std::map<std::pair<int, int>, int> edgeMap;
@@ -58,7 +60,6 @@ void Physics::init(Scene* scene) {
 
 void Physics::update(float dt) {
     applyPhysics(dt);
-    updateScene();
 }
 
 void Physics::calcCenter(Body& body) {
@@ -82,9 +83,9 @@ void Physics::applyPhysics(float dt) {
         for (Spring& spring : body.springs) {
             MassPoint& massA = body.masses[spring.A];
             MassPoint& massB = body.masses[spring.B];
-            float fs = 1000.0f * (glm::length(massB.r - massA.r) - spring.L);
+            float fs = body.k * (glm::length(massB.r - massA.r) - spring.L);
             glm::vec3 dir = massB.r - massA.r;
-            float fd = 500.0f * glm::dot(dir, massB.v - massA.v);
+            float fd = body.k * 0.5f * glm::dot(dir, massB.v - massA.v);
             massA.f += (fs + fd) * dir;
             massB.f -= (fs + fd) * dir;
         }
@@ -122,7 +123,7 @@ void Physics::applyPhysics(float dt) {
             float area = glm::length(glm::cross(e01, e02));
             glm::vec3 normal = glm::normalize(glm::cross(e01, e02));
             float V = abs((right - left) * (top - bottom) * (far - near));
-            float P = 1000.0;
+            float P = body.p;
             float f = ((area) * P) / V;
             v0.f += f * normal;
             v1.f += f * normal;

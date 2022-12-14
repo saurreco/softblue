@@ -209,9 +209,10 @@ void Scene::drawModel(Shader *shader, Camera *camera, Model model)
     shader->unbind();
 }
 
-void Scene::addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type, glm::vec3 center)
+void Scene::addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type, glm::vec3 center,
+                     float k, float p)
 {
-    Model model = Model{mesh, ambient, diffuse, specular, isEnvMapped, type, center};
+    Model model = Model{mesh, ambient, diffuse, specular, isEnvMapped, type, center, k, p};
     models.push_back(model);
 }
 

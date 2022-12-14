@@ -11,10 +11,10 @@
 class SphereMesh : public Mesh
 {
 public:
-    SphereMesh(glm::mat4 model) {
+    SphereMesh(int n, glm::mat4 model) {
         createIcosahedron();
-        subdivide();
-        subdivide();
+       for (int i = 0; i < n; i++)
+           subdivide();
 
         buildGeometry(model);
         genBuffers();

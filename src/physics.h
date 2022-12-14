@@ -16,6 +16,8 @@ struct Body {
     std::vector<MassPoint> masses;
     std::vector<Spring> springs;
     glm::vec3 center;
+    float k;
+    float p;
 };
 
 class Physics {
@@ -29,7 +31,8 @@ public:
     float stiffness;
     float damping;
     float massOfPoint;
+        void updateScene();
 private:
     void applyPhysics(float dt);
-    void updateScene();
+
 };

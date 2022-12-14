@@ -25,6 +25,12 @@ void Camera::setView(glm::vec3 pos, glm::vec3 look, glm::vec3 up)
     this->right = glm::cross(glm::vec3(this->look), glm::vec3(this->up));
 }
 
+void Camera::panDown(float y) {
+    this->pos = glm::vec3(pos.x, pos.y - y, pos.z);
+    this->view = glm::lookAt(pos, pos + look, up);
+    this->viewProj = proj * view;
+}
+
 void Camera::updateUpnLook(glm::mat3 rotationMatrix)
 {
     this->look = rotationMatrix * this->look;

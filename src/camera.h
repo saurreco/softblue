@@ -20,6 +20,7 @@ public:
     void updateCameraPos(glm::vec3 direction);
     glm::vec3 getTranslation(Qt::Key keyDown);
     void updateUpnLook(glm::mat3 rotationMatrix);
+    void panDown(float y);
 
     glm::vec3 pos;
     glm::vec3 look;

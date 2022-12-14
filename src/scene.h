@@ -19,6 +19,8 @@ struct Model
     bool isEnvMapped;
     int type;
     glm::vec3 center;
+    float k;
+    float p;
 };
 
 struct Light
@@ -31,7 +33,8 @@ class Scene
 {
 public:
     void drawScene(Shader *shader, Camera *camera);
-    void addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type, glm::vec3 center);
+    void addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type, glm::vec3 center,
+                  float k, float p);
     void setLight(glm::vec4 color, glm::vec3 dir);
     void setupCubemap();
 
