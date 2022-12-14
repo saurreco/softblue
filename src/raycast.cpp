@@ -36,18 +36,18 @@ struct IntersectData Raycast::cubeCollide(glm::vec3 point) {
 
     return IntersectData{hits % 2, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0)};
     */
-
-    int collide = point.x <= 0.5 && point.x >= -0.5 &&
-                  point.y <= 0.5 && point.y >= -0.5 &&
-                  point.z <= 0.5 && point.z >= -0.5;
+    float e = 0.0f;
+    int collide = point.x + e <= 0.5 && point.x - e >= -0.5 &&
+                  point.y + e <= 0.5 && point.y - e >= -0.5 &&
+                  point.z + e <= 0.5 && point.z - e >= -0.5;
     if (collide) {
         std::vector<IntersectData> tmp;
-        glm::vec3 top(point.x, 0.5, point.z);
-        glm::vec3 bottom(point.x, -0.5, point.z);
-        glm::vec3 left(-0.5, point.y, point.z);
-        glm::vec3 right(0.5, point.y, point.z);
-        glm::vec3 forward(point.x, point.y, 0.5);
-        glm::vec3 back(point.x, point.y, -0.5);
+        glm::vec3 top(point.x, 0.5 + e, point.z);
+        glm::vec3 bottom(point.x, -0.5 - e, point.z);
+        glm::vec3 left(-0.5 - e, point.y, point.z);
+        glm::vec3 right(0.5 + e, point.y, point.z);
+        glm::vec3 forward(point.x, point.y, 0.5 + e);
+        glm::vec3 back(point.x, point.y, -0.5 - e);
         tmp.push_back(IntersectData{1, top, glm::vec3(0, 1, 0)});
         tmp.push_back(IntersectData{1, bottom, glm::vec3(0, -1, 0)});
         tmp.push_back(IntersectData{1, left, glm::vec3(-1, 0, 0)});

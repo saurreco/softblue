@@ -14,7 +14,6 @@ public:
     SphereMesh(glm::mat4 model) {
         createIcosahedron();
         subdivide();
-
         subdivide();
 
         buildGeometry(model);

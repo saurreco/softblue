@@ -19,7 +19,7 @@ void Camera::setView(glm::vec3 pos, glm::vec3 look, glm::vec3 up)
     this->pos = pos;
     this->look = look;
     this->up = up;
-    this->view = glm::lookAt(pos, look, up);
+    this->view = glm::lookAt(pos, pos + look, up);
     this->viewProj = proj * view;
     this->left = glm::cross(glm::vec3(this->up), glm::vec3(this->look));
     this->right = glm::cross(glm::vec3(this->look), glm::vec3(this->up));

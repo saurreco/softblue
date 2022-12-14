@@ -40,6 +40,7 @@ public:
 
     // dynamic env mapping
     void drawFboSide(Shader *shader, Camera *camera);
+    void updateReflectiveObjectPosition(glm::vec3 objectPosition);
     void initializeSideCameras();
 
 private:
@@ -54,4 +55,5 @@ private:
     Camera *rightCamera = new Camera();
     Camera *frontCamera = new Camera();
     Camera *backCamera = new Camera();
+    glm::vec3 objectPosition = glm::vec3(0.f);
 };

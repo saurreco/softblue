@@ -19,10 +19,16 @@ void Scene::drawFboSide(Shader *shader, Camera *camera)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glActiveTexture(GL_TEXTURE0);
+    int modelIndex = 0;
     for (Model model : models)
     {
+        if (modelIndex == 0) {
+            modelIndex++;
+            continue;
+        }
         drawModel(shader, camera, model);
-        break; // DRAW ONLY THE FIRST ONE!
+//        break; // DRAW ONLY THE FIRST ONE!
+        modelIndex++;
     }
     glBindVertexArray(0);
 
@@ -40,6 +46,7 @@ void Scene::drawFboSide(Shader *shader, Camera *camera)
 
 void Scene::drawScene(Shader *shader, Camera *camera)
 {
+//    this->drawFboSide(shader, bottomCamera);
     // dynamic env map
     this->cubemap->bindDynamic();
     glViewport(0, 0, this->cubemap->cubemapSideLength, this->cubemap->cubemapSideLength);
@@ -140,15 +147,16 @@ void Scene::drawScene(Shader *shader, Camera *camera)
 
     glActiveTexture(GL_TEXTURE0);
     this->cubemap->bindCubesideTex(); // binding fbo_tex_cube, the texture of the cube
-    int count = 0;
+//    int count = 0;
     for (Model model : models)
     {
         drawModel(shader, camera, model);
-        if (count == 0)
-        {
-            continue;
-        } // DRAW ONLY THE SECOND ONE!
-        count++;
+//        break; // DRAW ONLY THE FIRST MODEL (THE SPHERE)
+//        if (count == 0)
+//        {
+//            continue;
+//        } // DRAW ONLY THE SECOND ONE!
+//        count++;
     }
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glBindVertexArray(0);
@@ -158,8 +166,8 @@ void Scene::drawScene(Shader *shader, Camera *camera)
     shader->bind(ShaderType::CUBEMAP_SHADER);
     // camera->viewProj
     shader->addUniformMat4(ShaderType::CUBEMAP_SHADER, "viewProj", camera->viewProj); /* viewproj matrix */
-                                                                                      //    shader->addUniformInt(ShaderType::CUBEMAP_SHADER, "cubemap_texture", 0);
-                                                                                      //  this->cubemap->drawCubeMap();
+    shader->addUniformInt(ShaderType::CUBEMAP_SHADER, "cubemap_texture", 0);
+    this->cubemap->drawCubeMap();
     shader->unbind();
     glDepthMask(GL_TRUE);
     // CUBEMAP ---------------------------------------------------------
@@ -231,15 +239,31 @@ void Scene::initializeSideCameras()
 {
     // CURRENTLY SETTING BOTH WIDTH & HEIGHT TO 1.f TO MAINTAIN 1:1 RATIO!
     // init top camera:
-    this->topCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f);
+//    this->topCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f);
+//    // init bottom camera:
+//    this->bottomCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f);
+//    // init left camera:
+//    this->leftCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f);
+//    // init right camera:
+//    this->rightCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f);
+//    // init front camera:
+//    this->frontCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f); // -1, 90
+//    // init back camera:
+//    this->backCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f);
+    this->topCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f);
     // init bottom camera:
-    this->bottomCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f);
+    this->bottomCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f);
     // init left camera:
-    this->leftCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f);
+    this->leftCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f);
     // init right camera:
-    this->rightCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f);
+    this->rightCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f);
     // init front camera:
-    this->frontCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f); // -1, 90
+    this->frontCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f); // -1, 90
     // init back camera:
-    this->backCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f);
+    this->backCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f);
+    // glm::vec3(-3, 3, 0)
+}
+
+void Scene::updateReflectiveObjectPosition(glm::vec3 objectPos) {
+    this->objectPosition = objectPos;
 }
