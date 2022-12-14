@@ -209,9 +209,9 @@ void Scene::drawModel(Shader *shader, Camera *camera, Model model)
     shader->unbind();
 }
 
-void Scene::addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type)
+void Scene::addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type, glm::vec3 center)
 {
-    Model model = Model{mesh, ambient, diffuse, specular, isEnvMapped, type};
+    Model model = Model{mesh, ambient, diffuse, specular, isEnvMapped, type, center};
     models.push_back(model);
 }
 
@@ -250,20 +250,20 @@ void Scene::initializeSideCameras()
 //    this->frontCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f); // -1, 90
 //    // init back camera:
 //    this->backCamera->init(1.f, 1.f, glm::vec3(0, 0, 0), glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f);
-    this->topCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f, 0.1f);
+    this->topCamera->init(1.f, 1.f, this->models[0].center, glm::vec3(0, 10, 0), glm::vec3(0, 0, 1), 90.f, 0.1f);
     // init bottom camera:
-    this->bottomCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f, 0.1f);
+    this->bottomCamera->init(1.f, 1.f, this->models[0].center, glm::vec3(0, -10, 0), glm::vec3(0, 0, -1), 90.f, 0.1f);
     // init left camera:
-    this->leftCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f, 0.1f);
+    this->leftCamera->init(1.f, 1.f, this->models[0].center, glm::vec3(-10, 0, 0), glm::vec3(0, -1, 0), 90.f, 0.1f);
     // init right camera:
-    this->rightCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f, 0.1f);
+    this->rightCamera->init(1.f, 1.f, this->models[0].center, glm::vec3(10, 0, 0), glm::vec3(0, -1, 0), 90.f, 0.1f);
     // init front camera:
-    this->frontCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f, 0.1f); // -1, 90
+    this->frontCamera->init(1.f, 1.f, this->models[0].center, glm::vec3(0, 0, -10), glm::vec3(0, -1, 0), 90.f, 0.1f); // -1, 90
     // init back camera:
-    this->backCamera->init(1.f, 1.f, this->objectPosition, glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f, 0.1f);
+    this->backCamera->init(1.f, 1.f, this->models[0].center, glm::vec3(0, 0, 10), glm::vec3(0, -1, 0), 90.f, 0.1f);
     // glm::vec3(-3, 3, 0)
 }
 
-void Scene::updateReflectiveObjectPosition(glm::vec3 objectPos) {
-    this->objectPosition = objectPos;
-}
+//void Scene::updateReflectiveObjectPosition(glm::vec3 objectPos) {
+//    this->objectPosition = objectPos;
+//}

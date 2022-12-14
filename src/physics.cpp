@@ -21,9 +21,10 @@ void Physics::init(Scene* scene) {
             mass.v = glm::vec3(0, 0, 0);
             mass.f = glm::vec3(0, 0, 0);
             mass.r = model.geometry->getVertex(i);
-            mass.n = model.geometry->getNormal(i);
             body.masses.push_back(mass);
         }
+
+        calcCenter(body);
 
         /* spring */
         std::map<std::pair<int, int>, int> edgeMap;
@@ -58,6 +59,15 @@ void Physics::init(Scene* scene) {
 void Physics::update(float dt) {
     applyPhysics(dt);
     updateScene();
+}
+
+void Physics::calcCenter(Body& body) {
+    glm::vec3 center(0, 0, 0);
+    for (MassPoint mass : body.masses) {
+        center += mass.r;
+
+    }
+    body.center = center * (1 / (float)body.masses.size());
 }
 
 void Physics::applyPhysics(float dt) {
@@ -100,16 +110,6 @@ void Physics::applyPhysics(float dt) {
             if (mass.r.z < far)
                 far = mass.r.z;
         }
-        glm::vec3 center(0, 0, 0);
-        for (MassPoint mass : body.masses) {
-            center += mass.r;
-
-        }
-        center = center * (1 / (float)body.masses.size());
-//        float obj_x = (right - left) / 2 + right;
-//        float obj_y = (top - bottom) / 2 + top;
-//        float obj_z = (far - near) / 2 + far;
-        this->objectCenter = center;
 
 
         for (int k = 0; k < scene->models[i].geometry->numIndices / 3; k++) {
@@ -127,10 +127,6 @@ void Physics::applyPhysics(float dt) {
             v0.f += f * normal;
             v1.f += f * normal;
             v2.f += f * normal;
-            v0.n = normal;
-            v1.n = normal;
-            v2.n = normal;
-
         }
 
         for (MassPoint& mass : body.masses) {
@@ -150,6 +146,7 @@ void Physics::applyPhysics(float dt) {
                     mass.v = 0.5f * glm::reflect(mass.v, glm::vec3(normalMatrix * glm::vec4(hit.normal, 0)));
                 }
             }
+            calcCenter(body);
         }
         i++;
     }
@@ -157,9 +154,10 @@ void Physics::applyPhysics(float dt) {
 
 void Physics::updateScene() {
     for (int i = 0; i < bodies.size(); i++) {
+        scene->models[i].center = bodies[i].center;
         for (int j = 0; j < bodies[i].masses.size(); j++) {
             scene->models[i].geometry->setVertex(j, bodies[i].masses[j].r);
-           scene->models[i].geometry->setNormal(j,  glm::normalize(bodies[i].masses[j].r - objectCenter)); // glm::normalize(bodies[i].masses[j].r - objectCenter)
+           scene->models[i].geometry->setNormal(j,  glm::normalize(bodies[i].masses[j].r - bodies[i].center)); // glm::normalize(bodies[i].masses[j].r - objectCenter)
         }
         scene->models[i].geometry->updateBuffers();
     }

@@ -18,6 +18,7 @@ struct Model
     glm::vec4 specular;
     bool isEnvMapped;
     int type;
+    glm::vec3 center;
 };
 
 struct Light
@@ -30,7 +31,7 @@ class Scene
 {
 public:
     void drawScene(Shader *shader, Camera *camera);
-    void addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type);
+    void addModel(Mesh *mesh, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, bool isEnvMapped, int type, glm::vec3 center);
     void setLight(glm::vec4 color, glm::vec3 dir);
     void setupCubemap();
 
@@ -40,7 +41,7 @@ public:
 
     // dynamic env mapping
     void drawFboSide(Shader *shader, Camera *camera);
-    void updateReflectiveObjectPosition(glm::vec3 objectPosition);
+//    void updateReflectiveObjectPosition(glm::vec3 objectPosition);
     void initializeSideCameras();
 
 private:
@@ -55,5 +56,4 @@ private:
     Camera *rightCamera = new Camera();
     Camera *frontCamera = new Camera();
     Camera *backCamera = new Camera();
-    glm::vec3 objectPosition = glm::vec3(0.f);
 };

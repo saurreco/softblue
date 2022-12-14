@@ -98,21 +98,22 @@ void Realtime::initializeGL()
     scene->addModel(new SphereMesh(glm::translate(glm::scale(glm::mat4(1), glm::vec3(1.f)), glm::vec3(-3, 12, 0))), // x = -3 y = 12
                     // glm::vec3(0.4, 0.4, 0.4)
                     glm::vec4(0.f, 0.5, 0.f, 1),
-                    glm::vec4(1, 1, 1, 1), glm::vec4(1, 1, 1, 1), true, 1);
-    scene->updateReflectiveObjectPosition(glm::vec3(-3, 12, 0));
+                    glm::vec4(1, 1, 1, 1), glm::vec4(1, 1, 1, 1), true, 1, glm::vec3(-3, 12, 0));
     scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.5, 0, 0))),
                     glm::vec4(0.5, 0.5, 0.5, 1),
                     glm::vec4(1, 1, 1, 1),
                     glm::vec4(1, 1, 1, 1),
                     false,
-                    0);
+                    0,
+                    glm::vec3(-0.5, 0, 0));
 
     scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.5, -5, 0))),
                     glm::vec4(0.5, 0.5, 0.5, 1),
                     glm::vec4(1, 1, 1, 1),
                     glm::vec4(1, 1, 1, 1),
                     false,
-                    0);
+                    0,
+                    glm::vec3(0.5, -5, 0));
 //     scene->addModel(new SphereMesh(glm::translate(glm::mat4(1), glm::vec3(0, 4, 0))),
 //                     glm::vec4(0, 0.5, 0, 1),
 //                     glm::vec4(0, 1, 0, 1),
@@ -243,7 +244,7 @@ void Realtime::timerEvent(QTimerEvent *event)
     tmp(0.001);
     tmp(0.001);
     tmp(0.001);
-    this->scene->updateReflectiveObjectPosition(this->physics->objectCenter);
+//    this->scene->updateReflectiveObjectPosition(this->physics->objectCenter);
 //    std::cout << glm::to_string(physics->objectCenter) << std::endl;
     // reinitialize side cams
     this->scene->initializeSideCameras();
