@@ -7,13 +7,7 @@ void CubeMesh::pushTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
 void CubeMesh::pushFace(glm::vec3 upLeft, glm::vec3 upRight, glm::vec3 downLeft, glm::vec3 downRight) {
 }
 
-void CubeMesh::transform(glm::mat4 model) {
-    modelMatrix = model;
-    for (int i = 0; i < numVertices; i++) {
-         setVertex(i, glm::vec3(model * glm::vec4(getVertex(i), 1)));
-    }
-    updateBuffers();
-}
+
 
 void CubeMesh::createCube() {
 

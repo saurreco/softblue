@@ -95,19 +95,27 @@ void Realtime::initializeGL()
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
     // scene->addModel(new CubeMesh(glm::translate(glm::mat4(1), glm::vec3(0, 6, 0))),
     // shader->set(":/shaders/default.vert", ":/shaders/default.frag");
-    scene->addModel(new SphereMesh(2, glm::translate(glm::scale(glm::mat4(1), glm::vec3(1.f)), glm::vec3(-3, 12, 0))), // x = -3 y = 12
+    scene->addModel(new SphereMesh(2, glm::translate(glm::scale(glm::mat4(1), glm::vec3(1.f)), glm::vec3(3, 12, 0))), // x = -3 y = 12
                     // glm::vec3(0.4, 0.4, 0.4)
                     glm::vec4(0.f, 0.f, 0.5f, 1),
-                    glm::vec4(1, 1, 1, 1), glm::vec4(1, 1, 1, 1), true, 1, glm::vec3(-3, 12, 0),
-                    1000.0f, 1000.0f);
-    scene->addModel(new SphereMesh(0, glm::translate(glm::mat4(1), glm::vec3(-2, 3, 0))),
+                    glm::vec4(1, 1, 1, 1), glm::vec4(1, 1, 1, 1), true, 1, glm::vec3(3, 12, 0),
+                    10000.0f, 10000.0f);
+    scene->addModel(new SphereMesh(2, glm::translate(glm::mat4(1), glm::vec3(2, 3, 0))),
                     glm::vec4(0.1, 0.2, 0.5, 1),
                     glm::vec4(0.2, 0.5, 0.9, 1),
                     glm::vec4(1, 1, 1, 1),
                     false,
                     1,
-                    glm::vec3(-2, 3, 0),
-                    1000.0f, 1000.0f);
+                    glm::vec3(2, 3, 0),
+                    900.0f, 500.0f);
+    scene->addModel(new SphereMesh(2, glm::translate(glm::mat4(1), glm::vec3(-3, 5, 0))),
+                    glm::vec4(0.1, 0.2, 0.5, 1),
+                    glm::vec4(0.2, 0.8, 0.9, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    1,
+                    glm::vec3(-3, 5, 0),
+                    1000.0f, 200.0f);
     scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.5, 0, 0))),
                     glm::vec4(0.5, 0.5, 0.5, 1),
                     glm::vec4(1, 1, 1, 1),
@@ -116,20 +124,135 @@ void Realtime::initializeGL()
                     0,
                     glm::vec3(-0.5, 0, 0), 0, 0);
 
-    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.5, -5, 0))),
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.5f, glm::vec3(0, 0, 1)), glm::vec3(6, 1, 3)), glm::vec3(0.5, -5, 0))),
                     glm::vec4(0.5, 0.5, 0.5, 1),
                     glm::vec4(1, 1, 1, 1),
                     glm::vec4(1, 1, 1, 1),
                     false,
                     0,
                     glm::vec3(0.5, -5, 0), 0, 0);
-    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.4f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.5, -10, 0))),
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.0f, glm::vec3(0, 0, 1)), glm::vec3(1.5, 1, 2)), glm::vec3(0, -8.5, 0))),
                     glm::vec4(0.5, 0.5, 0.5, 1),
                     glm::vec4(1, 1, 1, 1),
                     glm::vec4(1, 1, 1, 1),
                     false,
                     0,
                     glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.28f, glm::vec3(0, 0, 1)), glm::vec3(2.3, 1, 2)), glm::vec3(1.6, -8.0, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.28f, glm::vec3(0, 0, 1)), glm::vec3(2.3, 1, 2)), glm::vec3(-1.6, -8.0, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.55f, glm::vec3(0, 0, 1)), glm::vec3(2.3, 1, 2)), glm::vec3(-3.0, -6.6, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.55f, glm::vec3(0, 0, 1)), glm::vec3(2.3, 1, 2)), glm::vec3(3.0, -6.6, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(0.3f, glm::vec3(0, 0, 1)), glm::vec3(10, 1, 3)), glm::vec3(0.2, -14.8, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.3f, glm::vec3(0, 0, 1)), glm::vec3(10, 1, 3)), glm::vec3(-0.2, -14.8, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(1, 11, 3)), glm::vec3(-1.7, -2, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(1, 11, 3)), glm::vec3(1.7, -2, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.60, -32, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.60, -36, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.60, -40, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.60, -44, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(0.60, -48, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
+    scene->addModel(new CubeMesh(glm::translate(glm::scale(glm::rotate(-0.0f, glm::vec3(0, 0, 1)), glm::vec3(5, 1, 3)), glm::vec3(-0.60, -62, 0))),
+                    glm::vec4(0.5, 0.5, 0.5, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    glm::vec4(1, 1, 1, 1),
+                    false,
+                    0,
+                    glm::vec3(-0.5, -10, 0), 0, 0);
+
     scene->setLight(glm::vec4(1, 1, 1, 1), glm::vec3(-1, -1, -1));
     scene->setupCubemap();
     this->scene->screenWidth = m_width;
@@ -243,6 +366,10 @@ void Realtime::tmp(float dt)
 
 void Realtime::timerEvent(QTimerEvent *event)
 {
+    // rectangular prism rotations
+//    time += M_PI/32;
+
+    // physics
     int elapsedms = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
     tmp(0.001);
@@ -255,6 +382,8 @@ void Realtime::timerEvent(QTimerEvent *event)
     tmp(0.001);
     tmp(0.001);
     physics->updateScene();
+//    this->scene->models[9].geometry->translateX(time);
+
 //    this->scene->updateReflectiveObjectPosition(this->physics->objectCenter);
 //    std::cout << glm::to_string(physics->objectCenter) << std::endl;
     // reinitialize side cams

@@ -10,7 +10,7 @@ void Camera::setFrustum(int w, int h, float fov, float nearPlane)
 {
     this->screenWidth = w;
     this->screenHeight = h;
-    this->proj = glm::perspective(glm::radians(fov), (w / (float)h), nearPlane, 100.0f);
+    this->proj = glm::perspective(glm::radians(fov), (w / (float)h), nearPlane, 1000.0f);
     this->viewProj = proj * view;
 }
 

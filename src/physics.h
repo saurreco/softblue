@@ -27,12 +27,11 @@ public:
     void calcCenter(Body& body);
     Scene* scene;
     std::vector<Body> bodies;
-    std::vector<Model> obstacles;
+    std::vector<Model*> obstacles;
     float stiffness;
     float damping;
     float massOfPoint;
-        void updateScene();
+    void updateScene();
 private:
     void applyPhysics(float dt);
-
 };

@@ -7,8 +7,9 @@ void Physics::init(Scene* scene) {
     bodies.clear();
     massOfPoint = 1.0f;
 
-    for (Model model : scene->models) {
-        if (!model.type) {
+    for (int i = 0; i < scene->models.size(); i++) {
+        Model* model = &scene->models[i];
+        if (!model->type) {
             obstacles.push_back(model);
             continue;
         }
@@ -16,21 +17,21 @@ void Physics::init(Scene* scene) {
         Body body;
 
         /* mass point */
-        for (int i = 0; i < model.geometry->numVertices; i++) {
+        for (int i = 0; i < model->geometry->numVertices; i++) {
             MassPoint mass;
             mass.v = glm::vec3(0, 0, 0);
             mass.f = glm::vec3(0, 0, 0);
-            mass.r = model.geometry->getVertex(i);
+            mass.r = model->geometry->getVertex(i);
             body.masses.push_back(mass);
         }
 
-        body.center = model.center;
-        body.k = model.k;
-        body.p = model.p;
+        body.center = model->center;
+        body.k = model->k;
+        body.p = model->p;
 
         /* spring */
         std::map<std::pair<int, int>, int> edgeMap;
-        for (int i = 0; i < model.geometry->numIndices / 3; i++) {
+        for (int i = 0; i < model->geometry->numIndices / 3; i++) {
             for (int j = 0; j < 3; j++) {
                 int a = i * 3 + j;
                 int b = i * 3 + ((j + 1) % 3);
@@ -44,10 +45,10 @@ void Physics::init(Scene* scene) {
                 std::pair<int, int> e = std::make_pair(a, b);
                 if (edgeMap.find(e) == edgeMap.end()) {
                     Spring spring;
-                    spring.A = model.geometry->indices[a];
-                    spring.B = model.geometry->indices[b];
-                    glm::vec3 v0 = model.geometry->getVertex(spring.A);
-                    glm::vec3 v1 = model.geometry->getVertex(spring.B);
+                    spring.A = model->geometry->indices[a];
+                    spring.B = model->geometry->indices[b];
+                    glm::vec3 v0 = model->geometry->getVertex(spring.A);
+                    glm::vec3 v1 = model->geometry->getVertex(spring.B);
                     spring.L = glm::length(v0 - v1);
                     body.springs.push_back(spring);
                 }
@@ -136,15 +137,15 @@ void Physics::applyPhysics(float dt) {
 
 
             /* collision */
-            for (Model model : obstacles) {
-                glm::mat4 modelMatrix = model.geometry->modelMatrix;
-                glm::mat4 inverseModelMatrix =  model.geometry->inverseModelMatrix;
-                glm::mat4 normalMatrix = model.geometry->normalMatrix;
+            for (Model* model : obstacles) {
+                glm::mat4 modelMatrix = model->geometry->modelMatrix;
+                glm::mat4 inverseModelMatrix =  model->geometry->inverseModelMatrix;
+                glm::mat4 normalMatrix = model->geometry->normalMatrix;
                 glm::vec3 objectR = glm::vec3(inverseModelMatrix * glm::vec4(mass.r, 1));
                 IntersectData hit = Raycast::cubeCollide(objectR);
                 if (hit.collide) {
                     mass.r = modelMatrix * glm::vec4(hit.pos, 1);
-                    mass.v = 0.5f * glm::reflect(mass.v, glm::vec3(normalMatrix * glm::vec4(hit.normal, 0)));
+                    mass.v = 0.9f * glm::reflect(mass.v, glm::vec3(normalMatrix * glm::vec4(hit.normal, 0)));
                 }
             }
             calcCenter(body);

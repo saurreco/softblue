@@ -15,6 +15,16 @@ int Mesh::pushVertex(glm::vec3 v, glm::vec3 vn)
     return numVertices - 1;
 }
 
+void Mesh::translateX(float t) {
+    glm::vec3 tmp(glm::sin(t) * 0.5, 0, 0);
+
+    for (int i = 0; i < numVertices; i++) {
+         setVertex(i, tmp + getVertex(i));
+    }
+
+//    buildGeometry(glm::translate(modelMatrix, tmp));
+}
+
 glm::vec3 Mesh::getVertex(int i) {
     return glm::vec3(vertices[i * 6], vertices[i * 6 + 1], vertices[i * 6 + 2]);
 }

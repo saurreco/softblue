@@ -70,5 +70,5 @@ private:
     // Transforming the prisms
     glm::vec3 movementVec = glm::vec3(0.f, 1.f, 0.f);
     float deltaMovement = 0.2f;
-    float time = 1.f;
+    float time = 0.f;
 };
